@@ -242,10 +242,12 @@ function filterProjects() {
   const libraryFilter = document.getElementById("library-filter").value;
 
   const filteredProjects = projects.filter(project => {
-    return (categoryFilter === 'all' || project['Category(s)'].split(',').map(item => item.trim().toLowerCase()).includes(categoryFilter)) &&
-           (techFilter === 'all' || project['Technologies'].split(',').map(item => item.trim().toLowerCase()).includes(techFilter)) &&
-           (techniqueFilter === 'all' || project['Techniques Used'].split(',').map(item => item.trim().toLowerCase()).includes(techniqueFilter)) &&
-           (libraryFilter === 'all' || project['Libraries Used'].split(',').map(item => item.trim().toLowerCase()).includes(libraryFilter));
+    return (
+      (categoryFilter === 'all' || project['Category(s)'].toLowerCase().includes(categoryFilter)) &&
+      (techFilter === 'all' || project['Technologies'].toLowerCase().includes(techFilter)) &&
+      (techniqueFilter === 'all' || project['Techniques Used'].toLowerCase().includes(techniqueFilter)) &&
+      (libraryFilter === 'all' || project['Libraries Used'].toLowerCase().includes(libraryFilter))
+    );
   });
 
   displayProjects(filteredProjects);
@@ -253,18 +255,21 @@ function filterProjects() {
 
 function displayProjects(filteredProjects) {
   const container = document.getElementById("project-cards-container");
-  container.innerHTML = '';  // Clear existing projects
+  container.innerHTML = ''; // Clear existing projects
+  
   filteredProjects.forEach(project => {
     const card = document.createElement('div');
-    card.className = 'project-card';
+    card.classList.add('project-card');
+    
+    const projectName = project['Project Name'];
+    const description = project['Description'];
+
     card.innerHTML = `
-      <h3>${project['Project Name']}</h3>
-      <p><strong>Category:</strong> ${project['Category(s)']}</p>
-      <p><strong>Technologies:</strong> ${project['Technologies']}</p>
-      <p><strong>Techniques:</strong> ${project['Techniques Used']}</p>
-      <p><strong>Libraries:</strong> ${project['Libraries Used']}</p>
+      <h3>${projectName}</h3>
+      <p>${description}</p>
       <a href="${project['Project URL']}" target="_blank">View Project</a>
     `;
+    
     container.appendChild(card);
   });
 }
