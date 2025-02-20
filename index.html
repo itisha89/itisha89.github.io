@@ -9,14 +9,14 @@
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       margin: 0;
       padding: 0;
-      background-color: #f9f9f9;
-      color: #333;
+      background-color: #E0F2F7; /* Light Blue background */
+      color: #333; /* Dark gray for text */
     }
     header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      background-color: #2a3d66;
+      background-color: #225CA3; /* Dark Blue for header */
       color: #fff;
       padding: 20px 30px;
       box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
@@ -83,23 +83,36 @@
     }
     .project-card:hover {
       transform: translateY(-10px);
-      background-color: #e0e7ff;
-      border-color: #2a3d66;
+      background-color: #F5F5F5;
+      border-color: #225CA3;
     }
     .project-card a {
       text-decoration: none;
-      color: #2a3d66;
+      color: #225CA3; /* Dark Blue for links */
       font-weight: bold;
     }
     footer {
       text-align: center;
       margin: 40px;
       padding: 20px;
-      background-color: #2a3d66;
+      background-color: #225CA3; /* Dark Blue footer */
       color: #fff;
     }
     footer .social-links img {
       width: 35px;
+    }
+    .btn-primary {
+      background-color: #F2782C; /* Bright Orange for Call-to-Action Buttons */
+      color: #fff;
+      border: none;
+      padding: 12px 25px;
+      font-size: 16px;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    .btn-primary:hover {
+      background-color: #D9651F; /* Darker Orange on hover */
     }
   </style>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
@@ -206,40 +219,41 @@ function populateFilters() {
   populateFilterOptions("library-filter", Array.from(libraries).sort());
 }
 
-function populateFilterOptions(filterId, valuesArray) {
-  const filter = document.getElementById(filterId);
-  valuesArray.forEach(value => {
-    let option = document.createElement("option");
-    option.value = value;
-    option.textContent = value.charAt(0).toUpperCase() + value.slice(1);
+function populateFilterOptions(id, items) {
+  const filter = document.getElementById(id);
+  items.forEach(item => {
+    const option = document.createElement('option');
+    option.value = item;
+    option.textContent = item.charAt(0).toUpperCase() + item.slice(1);
     filter.appendChild(option);
   });
 }
 
 function filterProjects() {
-  const category = document.getElementById("category-filter").value;
-  const tech = document.getElementById("tech-filter").value;
-  const technique = document.getElementById("technique-filter").value;
-  const library = document.getElementById("library-filter").value;
+  const categoryFilter = document.getElementById('category-filter').value;
+  const techFilter = document.getElementById('tech-filter').value;
+  const techniqueFilter = document.getElementById('technique-filter').value;
+  const libraryFilter = document.getElementById('library-filter').value;
 
   const filteredProjects = projects.filter(project => {
-    return (category === "all" || project['Category(s)'].toLowerCase().split(',').map(item => item.trim()).includes(category)) &&
-           (tech === "all" || project['Technologies'].toLowerCase().split(',').map(item => item.trim()).includes(tech)) &&
-           (technique === "all" || project['Techniques Used'].toLowerCase().split(',').map(item => item.trim()).includes(technique)) &&
-           (library === "all" || project['Libraries Used'].toLowerCase().split(',').map(item => item.trim()).includes(library));
+    return (categoryFilter === 'all' || project['Category(s)'].split(',').map(item => item.trim().toLowerCase()).includes(categoryFilter)) &&
+           (techFilter === 'all' || project['Technologies'].split(',').map(item => item.trim().toLowerCase()).includes(techFilter)) &&
+           (techniqueFilter === 'all' || project['Techniques Used'].split(',').map(item => item.trim().toLowerCase()).includes(techniqueFilter)) &&
+           (libraryFilter === 'all' || project['Libraries Used'].split(',').map(item => item.trim().toLowerCase()).includes(libraryFilter));
   });
+
   displayProjects(filteredProjects);
 }
 
 function displayProjects(filteredProjects) {
-  const container = document.getElementById("project-cards-container");
+  const container = document.getElementById('project-cards-container');
   container.innerHTML = '';
   filteredProjects.forEach(project => {
-    let card = document.createElement("div");
-    card.classList.add("project-card");
+    const card = document.createElement('div');
+    card.className = 'project-card';
     card.innerHTML = `
       <h3>${project['Project Name']}</h3>
-      <p><strong>Description:</strong> ${project['Description']}</p>
+      <p>${project['Description']}</p>
       <a href="${project['Link']}" target="_blank">View Project</a>
     `;
     container.appendChild(card);
