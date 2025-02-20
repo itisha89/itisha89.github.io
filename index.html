@@ -73,12 +73,7 @@
   <label for="category-filter">Filter by Category: </label>
   <select id="category-filter" onchange="filterProjects()">
     <option value="all">All Categories</option>
-    <option value="Data Visualization">Data Visualization</option>
-    <option value="Healthcare Analytics">Healthcare Analytics</option>
-    <option value="Geospatial Analysis">Geospatial Analysis</option>
-    <option value="Business Intelligence">Business Intelligence</option>
-    <option value="Environmental Analysis">Environmental Analysis</option>
-    <option value="Automotive Analytics">Automotive Analytics</option>
+    <!-- Dynamic options will be injected here -->
   </select>
 </div>
 
@@ -89,6 +84,7 @@
 <script>
 // Global variable to store projects data
 let projects = [];
+let categories = [];
 
 // Fetch and parse the CSV file
 function loadCSV() {
@@ -98,11 +94,38 @@ function loadCSV() {
     dynamicTyping: true,
     complete: function(results) {
       projects = results.data; // Store parsed data
+      extractCategories(); // Extract categories from the data
+      createCategoryFilters(); // Create dynamic filter options
       filterProjects(); // Call the function to display projects
     },
     error: function(error) {
       console.error("Error parsing CSV:", error.message);
     }
+  });
+}
+
+// Function to extract unique categories from the data
+function extractCategories() {
+  projects.forEach(project => {
+    const projectCategories = project['Category(s)'].split(','); // Assuming categories are comma-separated
+    projectCategories.forEach(category => {
+      if (!categories.includes(category.trim())) {
+        categories.push(category.trim()); // Add unique categories
+      }
+    });
+  });
+  categories.sort(); // Sort categories alphabetically
+}
+
+// Function to create category filter options dynamically
+function createCategoryFilters() {
+  const filterSelect = document.getElementById("category-filter");
+
+  categories.forEach(category => {
+    const option = document.createElement("option");
+    option.value = category;
+    option.textContent = category;
+    filterSelect.appendChild(option);
   });
 }
 
@@ -132,7 +155,10 @@ function filterProjects() {
   if (categoryFilter === "all") {
     displayProjects(projects);
   } else {
-    const filteredProjects = projects.filter(project => project['Category(s)'].includes(categoryFilter));
+    const filteredProjects = projects.filter(project => {
+      const projectCategories = project['Category(s)'].split(',');
+      return projectCategories.some(category => category.trim() === categoryFilter);
+    });
     displayProjects(filteredProjects);
   }
 }
