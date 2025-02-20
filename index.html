@@ -124,11 +124,16 @@ function loadCSV() {
 
 function extractUniqueValues() {
   projects.forEach(project => {
-    categories.add(...project['Category(s)'].toLowerCase().split(',').map(item => item.trim()));
-    technologies.add(...project['Technologies'].toLowerCase().split(',').map(item => item.trim()));
-    techniques.add(...project['Techniques Used'].toLowerCase().split(',').map(item => item.trim()));
-    libraries.add(...project['Libraries Used'].toLowerCase().split(',').map(item => item.trim()));
+    // Extract unique values and add them to the respective sets
+    extractValues(project['Category(s)'], categories);
+    extractValues(project['Technologies'], technologies);
+    extractValues(project['Techniques Used'], techniques);
+    extractValues(project['Libraries Used'], libraries);
   });
+}
+
+function extractValues(field, targetSet) {
+  field.split(',').map(item => item.trim().toLowerCase()).forEach(item => targetSet.add(item));
 }
 
 function updateDashboard() {
