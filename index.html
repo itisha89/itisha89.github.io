@@ -1,207 +1,127 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Itisha Sharma Portfolio</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 0;
-      padding: 0;
-      background-color: #f4f4f4;
-    }
-    header {
-      background-color: #333;
-      color: #fff;
-      padding: 15px;
-      text-align: center;
-      font-size: 24px;
-      font-weight: bold;
-    }
-    .dashboard {
-      display: flex;
-      justify-content: space-around;
-      background: #fff;
-      padding: 20px;
-      margin: 20px;
-      border-radius: 10px;
-      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    }
-    .dashboard div {
-      text-align: center;
-      font-size: 18px;
-      font-weight: bold;
-    }
-    .filter-container {
-      margin: 20px;
-      text-align: center;
-    }
-    select {
-      padding: 10px;
-      font-size: 16px;
-    }
-    .project-cards-container {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 20px;
-      margin-top: 20px;
-    }
-    .project-card {
-      background-color: #fff;
-      border: 1px solid #ccc;
-      border-radius: 8px;
-      padding: 20px;
-      width: 250px;
-      text-align: center;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-      transition: transform 0.3s ease;
-    }
-    .project-card:hover {
-      transform: scale(1.05);
-    }
-    .project-card h3 {
-      font-size: 18px;
-      margin: 10px 0;
-    }
-    .project-card p {
-      font-size: 14px;
-      color: #555;
-    }
-    .project-card a {
-      color: #3498db;
-      text-decoration: none;
-    }
-    .project-card a:hover {
-      text-decoration: underline;
-    }
-  </style>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Itisha Sharma Portfolio</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 20px;
+            font-size: 24px;
+        }
+        .dashboard {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+            margin: 20px;
+        }
+        .chart-container {
+            width: 45%;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        @media (max-width: 768px) {
+            .chart-container {
+                width: 100%;
+            }
+        }
+    </style>
 </head>
 <body>
 
 <header>
-  Itisha Sharma Portfolio
+    Itisha Sharma Portfolio
 </header>
 
-<!-- Dashboard -->
 <div class="dashboard">
-  <div>Total Projects: <span id="total-projects">0</span></div>
-  <div>Categories: <span id="unique-categories">0</span></div>
-  <div>Technologies: <span id="unique-technologies">0</span></div>
-  <div>Techniques Used: <span id="unique-techniques">0</span></div>
-  <div>Libraries Used: <span id="unique-libraries">0</span></div>
-</div>
-
-<div class="filter-container">
-  <label for="category-filter">Filter by Category: </label>
-  <select id="category-filter" onchange="filterProjects()">
-    <option value="all">All Categories</option>
-  </select>
-</div>
-
-<div class="project-cards-container" id="project-cards-container">
-  <!-- Project Cards will be displayed here -->
+    <div class="chart-container">
+        <canvas id="projectsByCategory"></canvas>
+    </div>
+    <div class="chart-container">
+        <canvas id="technologiesUsed"></canvas>
+    </div>
+    <div class="chart-container">
+        <canvas id="techniquesUsed"></canvas>
+    </div>
 </div>
 
 <script>
-// Global variable to store projects data
-let projects = [];
+    let projects = [];
 
-// Fetch and parse the CSV file
-function loadCSV() {
-  Papa.parse('https://docs.google.com/spreadsheets/d/e/2PACX-1vTSUGRxg-5qwj4dGT3Dg5VJeRGiUONiwX5yP5eJZyQLCC5kUt895zpJDHq7Z_QtqmK6B5X03hFtqYG9/pub?output=csv', {
-    download: true,
-    header: true,
-    dynamicTyping: true,
-    complete: function(results) {
-      projects = results.data;
-      updateDashboard();
-      populateCategoryFilter();
-      filterProjects();
-    },
-    error: function(error) {
-      console.error("Error parsing CSV:", error.message);
+    function loadCSV() {
+        Papa.parse('https://docs.google.com/spreadsheets/d/e/2PACX-1vTSUGRxg-5qwj4dGT3Dg5VJeRGiUONiwX5yP5eJZyQLCC5kUt895zpJDHq7Z_QtqmK6B5X03hFtqYG9/pub?output=csv', {
+            download: true,
+            header: true,
+            complete: function(results) {
+                projects = results.data;
+                updateCharts();
+            },
+            error: function(error) {
+                console.error("Error parsing CSV:", error.message);
+            }
+        });
     }
-  });
-}
 
-// Update Dashboard
-function updateDashboard() {
-  document.getElementById("total-projects").textContent = projects.length;
-  document.getElementById("unique-categories").textContent = getUniqueCount("Category(s)");
-  document.getElementById("unique-technologies").textContent = getUniqueCount("Technologies");
-  document.getElementById("unique-techniques").textContent = getUniqueCount("Techniques Used");
-  document.getElementById("unique-libraries").textContent = getUniqueCount("Libraries Used");
-}
-
-// Get unique count from a column
-function getUniqueCount(column) {
-  const uniqueItems = new Set();
-  projects.forEach(project => {
-    if (project[column]) {
-      project[column].split(",").forEach(item => uniqueItems.add(item.trim()));
+    function countOccurrences(column) {
+        const counts = {};
+        projects.forEach(project => {
+            if (project[column]) {
+                project[column].split(",").forEach(item => {
+                    const trimmedItem = item.trim();
+                    counts[trimmedItem] = (counts[trimmedItem] || 0) + 1;
+                });
+            }
+        });
+        return counts;
     }
-  });
-  return uniqueItems.size;
-}
 
-// Populate category dropdown dynamically
-function populateCategoryFilter() {
-  const categoryFilter = document.getElementById("category-filter");
-  const uniqueCategories = new Set();
-  
-  projects.forEach(project => {
-    if (project["Category(s)"]) {
-      project["Category(s)"].split(",").forEach(category => uniqueCategories.add(category.trim()));
+    function createChart(ctx, label, data, type) {
+        return new Chart(ctx, {
+            type: type,
+            data: {
+                labels: Object.keys(data),
+                datasets: [{
+                    label: label,
+                    data: Object.values(data),
+                    backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4CAF50', '#FF9800'],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: true }
+                }
+            }
+        });
     }
-  });
 
-  uniqueCategories.forEach(category => {
-    const option = document.createElement("option");
-    option.value = category;
-    option.textContent = category;
-    categoryFilter.appendChild(option);
-  });
-}
+    function updateCharts() {
+        const categoryData = countOccurrences("Category(s)");
+        const techData = countOccurrences("Technologies");
+        const techniqueData = countOccurrences("Techniques Used");
 
-// Function to display project cards
-function displayProjects(filteredProjects) {
-  const container = document.getElementById("project-cards-container");
-  container.innerHTML = ''; // Clear the container
+        createChart(document.getElementById("projectsByCategory"), "Projects by Category", categoryData, "bar");
+        createChart(document.getElementById("technologiesUsed"), "Technologies Used", techData, "pie");
+        createChart(document.getElementById("techniquesUsed"), "Techniques Used", techniqueData, "line");
+    }
 
-  filteredProjects.forEach(project => {
-    const card = document.createElement("div");
-    card.classList.add("project-card");
-    card.innerHTML = `
-      <h3>${project['Project Name']}</h3>
-      <p><strong>Category:</strong> ${project['Category(s)']}</p>
-      <p><strong>Technologies:</strong> ${project['Technologies']}</p>
-      <p><strong>Techniques:</strong> ${project['Techniques Used']}</p>
-      <p><strong>Libraries:</strong> ${project['Libraries Used']}</p>
-      <p><strong>Description:</strong> ${project['Description']}</p>
-      <a href="${project['Link']}" target="_blank">View Project</a>
-    `;
-    container.appendChild(card);
-  });
-}
-
-// Function to filter projects based on category
-function filterProjects() {
-  const categoryFilter = document.getElementById("category-filter").value;
-
-  if (categoryFilter === "all") {
-    displayProjects(projects);
-  } else {
-    const filteredProjects = projects.filter(project => project['Category(s)'].includes(categoryFilter));
-    displayProjects(filteredProjects);
-  }
-}
-
-// Initial load of projects when the page loads
-loadCSV();
-
+    loadCSV();
 </script>
 
 </body>
