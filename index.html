@@ -198,7 +198,6 @@ function loadCSV() {
 
 function extractUniqueValues() {
   projects.forEach(project => {
-    // Extract unique values and add them to the respective sets
     extractValues(project['Category(s)'], categories);
     extractValues(project['Technologies'], technologies);
     extractValues(project['Techniques Used'], techniques);
@@ -263,11 +262,12 @@ function displayProjects(filteredProjects) {
     
     const projectName = project['Project Name'];
     const description = project['Description'];
+    const projectLink = project['Link']; // From the Link column
 
     card.innerHTML = `
       <h3>${projectName}</h3>
       <p>${description}</p>
-      <a href="${project['Project URL']}" target="_blank">View Project</a>
+      <a href="${projectLink}" target="_blank">View Project</a>
     `;
     
     container.appendChild(card);
