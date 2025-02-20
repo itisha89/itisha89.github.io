@@ -12,10 +12,26 @@
       background-color: #f4f4f4;
     }
     header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
       background-color: #333;
       color: #fff;
-      padding: 10px;
-      text-align: center;
+      padding: 10px 20px;
+    }
+    header h1 {
+      margin: 0;
+    }
+    .social-links {
+      display: flex;
+      gap: 10px;
+    }
+    .social-links img {
+      width: 40px;
+      transition: transform 0.3s ease;
+    }
+    .social-links img:hover {
+      transform: scale(1.1);
     }
     .dashboard {
       display: flex;
@@ -65,6 +81,10 @@
       color: #333;
       font-weight: bold;
     }
+    footer {
+      text-align: center;
+      margin: 20px;
+    }
   </style>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
 </head>
@@ -72,6 +92,14 @@
 
 <header>
   <h1>Itisha Sharma Portfolio</h1>
+  <div class="social-links">
+    <a href="https://www.linkedin.com/in/itishasharmaofficial/" target="_blank">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/a/a9/LinkedIn_icon.svg" alt="LinkedIn">
+    </a>
+    <a href="https://github.com/itisha89" target="_blank">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/9/91/Octicons-mark-github.svg" alt="GitHub">
+    </a>
+  </div>
 </header>
 
 <div class="dashboard" id="dashboard">
@@ -102,6 +130,17 @@
 </div>
 
 <div class="project-cards-container" id="project-cards-container"></div>
+
+<footer>
+  <div class="social-links">
+    <a href="https://www.linkedin.com/in/itishasharmaofficial/" target="_blank">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/a/a9/LinkedIn_icon.svg" alt="LinkedIn">
+    </a>
+    <a href="https://github.com/itisha89" target="_blank">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/9/91/Octicons-mark-github.svg" alt="GitHub">
+    </a>
+  </div>
+</footer>
 
 <script>
 let projects = [];
@@ -145,15 +184,15 @@ function updateDashboard() {
 }
 
 function populateFilters() {
-  populateFilterOptions("category-filter", categories);
-  populateFilterOptions("tech-filter", technologies);
-  populateFilterOptions("technique-filter", techniques);
-  populateFilterOptions("library-filter", libraries);
+  populateFilterOptions("category-filter", Array.from(categories).sort());
+  populateFilterOptions("tech-filter", Array.from(technologies).sort());
+  populateFilterOptions("technique-filter", Array.from(techniques).sort());
+  populateFilterOptions("library-filter", Array.from(libraries).sort());
 }
 
-function populateFilterOptions(filterId, valuesSet) {
+function populateFilterOptions(filterId, valuesArray) {
   const filter = document.getElementById(filterId);
-  valuesSet.forEach(value => {
+  valuesArray.forEach(value => {
     let option = document.createElement("option");
     option.value = value;
     option.textContent = value.charAt(0).toUpperCase() + value.slice(1);
