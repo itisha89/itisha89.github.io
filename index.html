@@ -9,15 +9,15 @@
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       margin: 0;
       padding: 0;
-      background-color: #F2E9E4; /* Soft Beige */
-      color: #22223B; /* Deep Moody Blue */
+      background-color: #EDF6F9; /* Light Blue */
+      color: #333;
     }
     header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      background-color: #4A4E69; /* Dark Purple */
-      color: #F2E9E4; /* Soft Beige for text */
+      background-color: #006D77; /* Dark Teal for header */
+      color: #fff;
       padding: 20px 30px;
       box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     }
@@ -42,7 +42,7 @@
       gap: 30px;
       margin: 40px 0;
       padding: 30px;
-      background: #F2E9E4; /* Soft Beige */
+      background: #fff;
       border-radius: 10px;
       box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
     }
@@ -59,7 +59,7 @@
     select {
       padding: 12px;
       font-size: 16px;
-      border: 1px solid #4A4E69; /* Dark Purple border */
+      border: 1px solid #ccc;
       border-radius: 5px;
       background-color: #fff;
     }
@@ -71,8 +71,8 @@
       margin-top: 40px;
     }
     .project-card {
-      background-color: #F2E9E4; /* Soft Taupe */
-      border: 1px solid #22223B; /* Dark Purple Border */
+      background-color: #F2E9E4; 
+      border: 1px solid #22223B; 
       border-radius: 8px;
       padding: 20px;
       width: 250px;
@@ -83,26 +83,26 @@
     }
     .project-card:hover {
       transform: translateY(-10px);
-      background-color: #C9ADA7; /* Soft Beige Hover */
-      border-color: #4A4E69; /* Deep Moody Blue on hover */
+      background-color: #C9ADA7;
+      border-color: #4A4E69; 
     }
     .project-card a {
       text-decoration: none;
-      color: #22223B; /* Deep Moody Blue for links */
+      color: #22223B; 
       font-weight: bold;
     }
     footer {
       text-align: center;
       margin: 40px;
       padding: 20px;
-      background-color: #4A4E69; /* Dark Purple footer */
-      color: #F2E9E4; /* Soft Beige text */
+      background-color: #006D77; /* Dark Teal footer */
+      color: #fff;
     }
     footer .social-links img {
       width: 35px;
     }
     .btn-primary {
-      background-color: #C9ADA7; /* Soft Taupe for Call-to-Action Buttons */
+      background-color: #83C5BE; /* Light Teal for Call-to-Action Buttons */
       color: #fff;
       border: none;
       padding: 12px 25px;
@@ -112,7 +112,7 @@
       transition: background-color 0.3s ease;
     }
     .btn-primary:hover {
-      background-color: #F2E9E4; /* Soft Beige Hover */
+      background-color: #E29578; /* Peach on hover */
     }
   </style>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
@@ -235,36 +235,41 @@ function populateFilterOptions(id, items) {
 }
 
 function filterProjects() {
-  const categoryFilter = document.getElementById("category-filter").value.toLowerCase();
-  const techFilter = document.getElementById("tech-filter").value.toLowerCase();
-  const techniqueFilter = document.getElementById("technique-filter").value.toLowerCase();
-  const libraryFilter = document.getElementById("library-filter").value.toLowerCase();
+  const categoryFilter = document.getElementById("category-filter").value;
+  const techFilter = document.getElementById("tech-filter").value;
+  const techniqueFilter = document.getElementById("technique-filter").value;
+  const libraryFilter = document.getElementById("library-filter").value;
 
-  const filteredProjects = projects.filter(project => 
-    (categoryFilter === 'all' || project['Category(s)'].toLowerCase().includes(categoryFilter)) &&
-    (techFilter === 'all' || project['Technologies'].toLowerCase().includes(techFilter)) &&
-    (techniqueFilter === 'all' || project['Techniques Used'].toLowerCase().includes(techniqueFilter)) &&
-    (libraryFilter === 'all' || project['Libraries Used'].toLowerCase().includes(libraryFilter))
-  );
+  const filteredProjects = projects.filter(project => {
+    return (
+      (categoryFilter === 'all' || project['Category(s)'].toLowerCase().includes(categoryFilter)) &&
+      (techFilter === 'all' || project['Technologies'].toLowerCase().includes(techFilter)) &&
+      (techniqueFilter === 'all' || project['Techniques Used'].toLowerCase().includes(techniqueFilter)) &&
+      (libraryFilter === 'all' || project['Libraries Used'].toLowerCase().includes(libraryFilter))
+    );
+  });
 
   displayProjects(filteredProjects);
 }
 
 function displayProjects(filteredProjects) {
   const container = document.getElementById("project-cards-container");
-  container.innerHTML = '';
-
+  container.innerHTML = ''; // Clear existing projects
+  
   filteredProjects.forEach(project => {
     const card = document.createElement('div');
     card.classList.add('project-card');
+    
+    const projectName = project['Project Name'];
+    const description = project['Description'];
+    const projectLink = project['Link']; // From the Link column
+
     card.innerHTML = `
-      <h3>${project['Project Name']}</h3>
-      <p><strong>Category:</strong> ${project['Category(s)']}</p>
-      <p><strong>Technologies:</strong> ${project['Technologies']}</p>
-      <p><strong>Techniques:</strong> ${project['Techniques Used']}</p>
-      <p><strong>Libraries:</strong> ${project['Libraries Used']}</p>
-      <a href="${project['Link to Project']}" target="_blank">View Project</a>
+      <h3>${projectName}</h3>
+      <p>${description}</p>
+      <a href="${projectLink}" target="_blank">View Project</a>
     `;
+    
     container.appendChild(card);
   });
 }
