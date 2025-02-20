@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Data Analyst Portfolio</title>
+    <title>Itisha Sharma - Data Analyst Portfolio</title>
     <style>
         /* General Styles */
         body {
@@ -29,7 +29,7 @@
             font-size: 1.2rem;
             color: #ecf0f1;
         }
-        
+
         /* Categories */
         #categories {
             display: flex;
@@ -119,9 +119,11 @@
 
 <div id="categories">
     <button onclick="filterProjects('All')">All Projects</button>
-    <button onclick="filterProjects('Data Science')">Data Science</button>
-    <button onclick="filterProjects('Machine Learning')">Machine Learning</button>
+    <button onclick="filterProjects('Data Visualization')">Data Visualization</button>
+    <button onclick="filterProjects('Healthcare Analytics')">Healthcare Analytics</button>
+    <button onclick="filterProjects('Geospatial Analysis')">Geospatial Analysis</button>
     <button onclick="filterProjects('Business Intelligence')">Business Intelligence</button>
+    <button onclick="filterProjects('Environmental Analysis')">Environmental Analysis</button>
 </div>
 
 <div id="projects">
@@ -136,7 +138,7 @@
 <script>
 // Your Google Sheets API key and Sheet details
 const sheetId = "12hdkfU0VPSfLPH4gYRWHC3-q48nJBOXKBVnsPjYAg0U"; // Replace with your Google Sheet ID
-const apiKey = "AIzaSyDhuixUu0g5IvSVt4_LWb2Pg3THSn-187E"; // Replace with your API Key
+const apiKey = "YOUR_API_KEY"; // Replace with your API Key
 const sheetName = "Github Project Tracker"; // Your Google Sheets name
 
 // Fetch data from Google Sheets
@@ -160,15 +162,18 @@ function displayProjects(projects) {
     projectsContainer.innerHTML = ''; // Clear previous projects
 
     projects.forEach(project => {
-        const [title, category, description, link] = project;
+        const [projectName, categories, technologies, techniques, libraries, description, link] = project;
 
         const projectCard = document.createElement("div");
         projectCard.classList.add("project-card");
 
         projectCard.innerHTML = `
-            <h3>${title}</h3>
-            <p><strong>Category:</strong> ${category}</p>
-            <p>${description}</p>
+            <h3>${projectName}</h3>
+            <p><strong>Category(s):</strong> ${categories}</p>
+            <p><strong>Technologies:</strong> ${technologies}</p>
+            <p><strong>Techniques Used:</strong> ${techniques}</p>
+            <p><strong>Libraries Used:</strong> ${libraries}</p>
+            <p><strong>Description:</strong> ${description}</p>
             <a href="${link}" target="_blank">View Project</a>
         `;
 
@@ -183,8 +188,8 @@ function filterProjects(category) {
         const allProjects = projectsContainer.querySelectorAll(".project-card");
         
         allProjects.forEach(card => {
-            const projectCategory = card.querySelector("p").textContent.replace("Category: ", "");
-            if (category === "All" || projectCategory === category) {
+            const projectCategory = card.querySelector("p").textContent.replace("Category(s):", "").trim();
+            if (category === "All" || projectCategory.includes(category)) {
                 card.style.display = "block";
             } else {
                 card.style.display = "none";
