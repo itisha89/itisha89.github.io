@@ -1,250 +1,77 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Itisha Sharma - Data Analyst Portfolio</title>
-    <style>
-        body {
-            font-family: 'Arial', sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f4f7f6;
-            color: #333;
-        }
-        header {
-            background-color: #2c3e50;
-            color: white;
-            text-align: center;
-            padding: 1.5rem 0;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-        }
-        h1 {
-            font-size: 2.5rem;
-            font-weight: 700;
-            margin: 0;
-        }
-        p {
-            font-size: 1.2rem;
-            color: #ecf0f1;
-        }
-        #categories, #technologies, #techniques, #libraries {
-            display: flex;
-            justify-content: center;
-            margin-top: 2rem;
-            background-color: #ecf0f1;
-            padding: 1rem;
-            border-radius: 8px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            flex-wrap: wrap;
-        }
-        button {
-            padding: 1rem 2rem;
-            margin: 0.5rem;
-            font-size: 1rem;
-            cursor: pointer;
-            background-color: #3498db;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            transition: background-color 0.3s ease;
-        }
-        button:hover {
-            background-color: #2980b9;
-        }
-        #projects {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            margin: 3rem 0;
-        }
-        .project-card {
-            background-color: #fff;
-            border: 1px solid #ddd;
-            border-radius: 10px;
-            padding: 1.5rem;
-            margin: 1rem;
-            width: 350px;
-            text-align: center;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-        .project-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
-        }
-        .project-card h3 {
-            font-size: 1.6rem;
-            font-weight: 600;
-            color: #2c3e50;
-        }
-        .project-card p {
-            font-size: 1rem;
-            color: #7f8c8d;
-            margin: 1rem 0;
-        }
-        .project-card a {
-            padding: 0.7rem 1.5rem;
-            background-color: #27ae60;
-            color: white;
-            text-decoration: none;
-            border-radius: 5px;
-            font-size: 1rem;
-            transition: background-color 0.3s ease;
-        }
-        .project-card a:hover {
-            background-color: #2ecc71;
-        }
-        .project-description {
-            display: none;
-            margin-top: 1rem;
-        }
-        footer {
-            background-color: #2c3e50;
-            color: white;
-            text-align: center;
-            padding: 1rem 0;
-            font-size: 1rem;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Google Sheets Data Display</title>
+  <script src="https://cdn.jsdelivr.net/npm/papaparse@5.3.2/papaparse.min.js"></script>
+  <style>
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+    th, td {
+      padding: 8px;
+      text-align: left;
+      border: 1px solid #ddd;
+    }
+    th {
+      background-color: #f4f4f4;
+    }
+  </style>
 </head>
 <body>
+  <h1>Google Sheets Data</h1>
+  <p>This table displays data fetched from a Google Sheets CSV file.</p>
 
-<header>
-    <h1>Itisha Sharma - Data Analyst Portfolio</h1>
-    <p>Explore my data-driven projects and insights</p>
-</header>
+  <table id="data-table">
+    <thead>
+      <tr></tr>
+    </thead>
+    <tbody>
+      <!-- Data rows will be inserted here -->
+    </tbody>
+  </table>
 
-<div id="categories"></div>
-<div id="technologies"></div>
-<div id="techniques"></div>
-<div id="libraries"></div>
+  <script>
+    // Google Sheets CSV link
+    const sheetCsvUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTSUGRxg-5qwj4dGT3Dg5VJeRGiUONiwX5yP5eJZyQLCC5kUt895zpJDHq7Z_QtqmK6B5X03hFtqYG9/pub?output=csv';
 
-<div id="projects">
-    <!-- Project Cards will be dynamically displayed here -->
-</div>
+    // Fetch and parse the CSV data
+    fetch(sheetCsvUrl)
+      .then(response => response.text())
+      .then(data => {
+        const parsedData = Papa.parse(data, {header: true, skipEmptyLines: true}).data;
+        renderTable(parsedData);
+      })
+      .catch(error => console.error('Error fetching data:', error));
 
-<footer>
-    <p>© 2025 Itisha Sharma. All Rights Reserved.</p>
-</footer>
+    // Render the table
+    function renderTable(data) {
+      const table = document.getElementById('data-table');
+      const headers = Object.keys(data[0]);
 
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script>
-// Your Google Sheets API key and Sheet details
-const sheetId = "12hdkfU0VPSfLPH4gYRWHC3-q48nJBOXKBVnsPjYAg0U"; // Replace with your Google Sheet ID
-const apiKey = "AIzaSyDhuixUu0g5IvSVt4_LWb2Pg3THSn-187E"; // Replace with your API Key
-const sheetName = "Sheet3"; // Your Google Sheets name
+      // Create table header
+      const thead = table.querySelector('thead tr');
+      headers.forEach(header => {
+        const th = document.createElement('th');
+        th.textContent = header;
+        thead.appendChild(th);
+      });
 
-// Fetch data from Google Sheets
-async function fetchGoogleSheetData() {
-    const url = `https://sheets.googleapis.com/v4/spreadsheets/${sheetId}/values/${sheetName}?key=${apiKey}`;
-    
-    const response = await fetch(url);
-    const data = await response.json();
-    
-    console.log(data);  // Debugging: Check if data is fetched properly
-
-    if (data.values) {
-        const projects = data.values.slice(1); // Skip header row
-        console.log(projects);  // Debugging: Check projects data
-        displayProjects(projects);
-        populateFilters(projects);
-    } else {
-        console.error("Error fetching data");
+      // Create table rows
+      const tbody = table.querySelector('tbody');
+      data.forEach(row => {
+        const tr = document.createElement('tr');
+        headers.forEach(header => {
+          const td = document.createElement('td');
+          td.textContent = row[header] || ''; // Handle empty cells
+          tr.appendChild(td);
+        });
+        tbody.appendChild(tr);
+      });
     }
-}
-
-// Display the projects dynamically
-function displayProjects(projects) {
-    const projectsContainer = document.getElementById("projects");
-    projectsContainer.innerHTML = ''; // Clear previous projects
-
-    projects.forEach(project => {
-        const [projectName, categories, technologies, techniques, libraries, description, link] = project;
-
-        const projectCard = document.createElement("div");
-        projectCard.classList.add("project-card");
-
-        projectCard.innerHTML = `
-            <h3 onclick="toggleDescription('${projectName}')">${projectName}</h3>
-            <p><strong>Category(s):</strong> ${categories}</p>
-            <p><strong>Technologies:</strong> ${technologies}</p>
-            <p><strong>Techniques Used:</strong> ${techniques}</p>
-            <p><strong>Libraries Used:</strong> ${libraries}</p>
-            <div id="${projectName}-description" class="project-description">
-                <p><strong>Description:</strong> ${description}</p>
-                <a href="${link}" target="_blank">View Project</a>
-            </div>
-        `;
-
-        projectsContainer.appendChild(projectCard);
-    });
-}
-
-// Toggle visibility of project description
-function toggleDescription(projectName) {
-    const description = document.getElementById(`${projectName}-description`);
-    description.style.display = description.style.display === "none" ? "block" : "none";
-}
-
-// Populate filter categories, technologies, techniques, and libraries dynamically
-function populateFilters(projects) {
-    const categoriesContainer = document.getElementById("categories");
-    const technologiesContainer = document.getElementById("technologies");
-    const techniquesContainer = document.getElementById("techniques");
-    const librariesContainer = document.getElementById("libraries");
-
-    const categories = new Set();
-    const technologies = new Set();
-    const techniques = new Set();
-    const libraries = new Set();
-
-    projects.forEach(project => {
-        const [projectName, categoriesList, technologiesList, techniquesList, librariesList] = project;
-        
-        categoriesList.split(',').forEach(category => categories.add(category.trim()));
-        technologiesList.split(',').forEach(tech => technologies.add(tech.trim()));
-        techniquesList.split(',').forEach(technique => techniques.add(technique.trim()));
-        librariesList.split(',').forEach(library => libraries.add(library.trim()));
-    });
-
-    createFilterButtons(categories, categoriesContainer, 'Category');
-    createFilterButtons(technologies, technologiesContainer, 'Technologies');
-    createFilterButtons(techniques, techniquesContainer, 'Techniques');
-    createFilterButtons(libraries, librariesContainer, 'Libraries');
-}
-
-// Create filter buttons dynamically
-function createFilterButtons(items, container, label) {
-    const labelElement = document.createElement('p');
-    labelElement.textContent = label + ":";
-    container.appendChild(labelElement);
-
-    items.forEach(item => {
-        const button = document.createElement('button');
-        button.textContent = item;
-        button.onclick = () => filterProjectsByCategory(item);
-        container.appendChild(button);
-    });
-}
-
-// Filter projects by category
-function filterProjectsByCategory(category) {
-    const projectCards = document.querySelectorAll('.project-card');
-
-    projectCards.forEach(card => {
-        const categories = card.querySelector('p').textContent;
-        if (categories.includes(category)) {
-            card.style.display = 'block';
-        } else {
-            card.style.display = 'none';
-        }
-    });
-}
-
-// Initialize the page with all projects
-fetchGoogleSheetData();
-</script>
-
+  </script>
 </body>
 </html>
