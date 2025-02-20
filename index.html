@@ -9,14 +9,14 @@
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       margin: 0;
       padding: 0;
-      background-color: #EDF6F9; /* Light Blue */
+      background-color: #FAD0C9; /* Light Pink */
       color: #333;
     }
     header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      background-color: #006D77; /* Dark Teal for header */
+      background-color: #FFABAB; /* Soft Pink for header */
       color: #fff;
       padding: 20px 30px;
       box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
@@ -71,8 +71,8 @@
       margin-top: 40px;
     }
     .project-card {
-      background-color: #FFDDD2; /* Soft Peach for cards */
-      border: 1px solid #E29578; /* Peach Border */
+      background-color: #FAD6A5; /* Light Peach for cards */
+      border: 1px solid #FFC3A0; /* Soft Peach Border */
       border-radius: 8px;
       padding: 20px;
       width: 250px;
@@ -83,26 +83,26 @@
     }
     .project-card:hover {
       transform: translateY(-10px);
-      background-color: #F5F5F5;
-      border-color: #006D77; /* Dark Teal on hover */
+      background-color: #FFE1D1; /* Light Peach Hover */
+      border-color: #D5AAFF; /* Light Purple on hover */
     }
     .project-card a {
       text-decoration: none;
-      color: #006D77; /* Dark Teal for links */
+      color: #D5AAFF; /* Light Purple for links */
       font-weight: bold;
     }
     footer {
       text-align: center;
       margin: 40px;
       padding: 20px;
-      background-color: #006D77; /* Dark Teal footer */
+      background-color: #D5AAFF; /* Light Purple footer */
       color: #fff;
     }
     footer .social-links img {
       width: 35px;
     }
     .btn-primary {
-      background-color: #83C5BE; /* Light Teal for Call-to-Action Buttons */
+      background-color: #FFC3A0; /* Soft Peach for Call-to-Action Buttons */
       color: #fff;
       border: none;
       padding: 12px 25px;
@@ -112,7 +112,7 @@
       transition: background-color 0.3s ease;
     }
     .btn-primary:hover {
-      background-color: #E29578; /* Peach on hover */
+      background-color: #FAD6A5; /* Light Peach Hover */
     }
   </style>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
@@ -254,22 +254,19 @@ function filterProjects() {
 
 function displayProjects(filteredProjects) {
   const container = document.getElementById("project-cards-container");
-  container.innerHTML = ''; // Clear existing projects
-  
+  container.innerHTML = '';
+
   filteredProjects.forEach(project => {
     const card = document.createElement('div');
     card.classList.add('project-card');
-    
-    const projectName = project['Project Name'];
-    const description = project['Description'];
-    const projectLink = project['Link']; // From the Link column
-
     card.innerHTML = `
-      <h3>${projectName}</h3>
-      <p>${description}</p>
-      <a href="${projectLink}" target="_blank">View Project</a>
+      <h3>${project['Project Name']}</h3>
+      <p><strong>Category:</strong> ${project['Category(s)']}</p>
+      <p><strong>Technologies:</strong> ${project['Technologies']}</p>
+      <p><strong>Techniques:</strong> ${project['Techniques Used']}</p>
+      <p><strong>Libraries:</strong> ${project['Libraries Used']}</p>
+      <a href="${project['Link to Project']}" target="_blank">View Project</a>
     `;
-    
     container.appendChild(card);
   });
 }
