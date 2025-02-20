@@ -142,8 +142,11 @@ async function fetchGoogleSheetData() {
     const response = await fetch(url);
     const data = await response.json();
     
+    console.log(data);  // Debugging: Check if data is fetched properly
+
     if (data.values) {
         const projects = data.values.slice(1); // Skip header row
+        console.log(projects);  // Debugging: Check projects data
         displayProjects(projects);
         populateFilters(projects);
     } else {
