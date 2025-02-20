@@ -119,6 +119,7 @@ function loadCSV() {
 
 function extractUniqueValues() {
   projects.forEach(project => {
+    // Extracting unique values in lowercase
     categories.add(...project['Category(s)'].toLowerCase().split(',').map(item => item.trim()));
     technologies.add(...project['Technologies'].toLowerCase().split(',').map(item => item.trim()));
     techniques.add(...project['Techniques Used'].toLowerCase().split(',').map(item => item.trim()));
