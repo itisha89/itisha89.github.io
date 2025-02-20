@@ -9,14 +9,14 @@
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       margin: 0;
       padding: 0;
-      background-color: #E0F2F7; /* Light Blue background */
-      color: #333; /* Dark gray for text */
+      background-color: #EDF6F9; /* Light Blue */
+      color: #333;
     }
     header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      background-color: #225CA3; /* Dark Blue for header */
+      background-color: #006D77; /* Dark Teal for header */
       color: #fff;
       padding: 20px 30px;
       box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
@@ -71,8 +71,8 @@
       margin-top: 40px;
     }
     .project-card {
-      background-color: #fff;
-      border: 1px solid #ddd;
+      background-color: #FFDDD2; /* Soft Peach for cards */
+      border: 1px solid #E29578; /* Peach Border */
       border-radius: 8px;
       padding: 20px;
       width: 250px;
@@ -84,25 +84,25 @@
     .project-card:hover {
       transform: translateY(-10px);
       background-color: #F5F5F5;
-      border-color: #225CA3;
+      border-color: #006D77; /* Dark Teal on hover */
     }
     .project-card a {
       text-decoration: none;
-      color: #225CA3; /* Dark Blue for links */
+      color: #006D77; /* Dark Teal for links */
       font-weight: bold;
     }
     footer {
       text-align: center;
       margin: 40px;
       padding: 20px;
-      background-color: #225CA3; /* Dark Blue footer */
+      background-color: #006D77; /* Dark Teal footer */
       color: #fff;
     }
     footer .social-links img {
       width: 35px;
     }
     .btn-primary {
-      background-color: #F2782C; /* Bright Orange for Call-to-Action Buttons */
+      background-color: #83C5BE; /* Light Teal for Call-to-Action Buttons */
       color: #fff;
       border: none;
       padding: 12px 25px;
@@ -112,7 +112,7 @@
       transition: background-color 0.3s ease;
     }
     .btn-primary:hover {
-      background-color: #D9651F; /* Darker Orange on hover */
+      background-color: #E29578; /* Peach on hover */
     }
   </style>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
@@ -123,7 +123,7 @@
   <h1>Itisha Sharma Portfolio</h1>
   <div class="social-links">
     <a href="https://www.linkedin.com/in/itishasharmaofficial/" target="_blank">
-      <img src="https://upload.wikimedia.org/wikipedia/commons/a/a9/LinkedIn_icon.svg" alt="LinkedIn">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/81/LinkedIn_icon.svg/2048px-LinkedIn_icon.svg.png" alt="LinkedIn">
     </a>
     <a href="https://github.com/itisha89" target="_blank">
       <img src="https://upload.wikimedia.org/wikipedia/commons/9/91/Octicons-mark-github.svg" alt="GitHub">
@@ -166,7 +166,7 @@
 <footer>
   <div class="social-links">
     <a href="https://www.linkedin.com/in/itishasharmaofficial/" target="_blank">
-      <img src="https://upload.wikimedia.org/wikipedia/commons/a/a9/LinkedIn_icon.svg" alt="LinkedIn">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/81/LinkedIn_icon.svg/2048px-LinkedIn_icon.svg.png" alt="LinkedIn">
     </a>
     <a href="https://github.com/itisha89" target="_blank">
       <img src="https://upload.wikimedia.org/wikipedia/commons/9/91/Octicons-mark-github.svg" alt="GitHub">
@@ -236,10 +236,10 @@ function populateFilterOptions(id, items) {
 }
 
 function filterProjects() {
-  const categoryFilter = document.getElementById('category-filter').value;
-  const techFilter = document.getElementById('tech-filter').value;
-  const techniqueFilter = document.getElementById('technique-filter').value;
-  const libraryFilter = document.getElementById('library-filter').value;
+  const categoryFilter = document.getElementById("category-filter").value;
+  const techFilter = document.getElementById("tech-filter").value;
+  const techniqueFilter = document.getElementById("technique-filter").value;
+  const libraryFilter = document.getElementById("library-filter").value;
 
   const filteredProjects = projects.filter(project => {
     return (categoryFilter === 'all' || project['Category(s)'].split(',').map(item => item.trim().toLowerCase()).includes(categoryFilter)) &&
