@@ -247,25 +247,29 @@ function filterProjects() {
            (techniqueFilter === 'all' || project['Techniques Used'].split(',').map(item => item.trim().toLowerCase()).includes(techniqueFilter)) &&
            (libraryFilter === 'all' || project['Libraries Used'].split(',').map(item => item.trim().toLowerCase()).includes(libraryFilter));
   });
+
   displayProjects(filteredProjects);
 }
 
-function displayProjects(projects) {
+function displayProjects(filteredProjects) {
   const container = document.getElementById("project-cards-container");
-  container.innerHTML = "";
-  projects.forEach(project => {
-    const card = document.createElement("div");
-    card.className = "project-card";
+  container.innerHTML = '';  // Clear existing projects
+  filteredProjects.forEach(project => {
+    const card = document.createElement('div');
+    card.className = 'project-card';
     card.innerHTML = `
       <h3>${project['Project Name']}</h3>
-      <p>${project['Description']}</p>
-      <a href="${project['Link']}" target="_blank">See More</a>
+      <p><strong>Category:</strong> ${project['Category(s)']}</p>
+      <p><strong>Technologies:</strong> ${project['Technologies']}</p>
+      <p><strong>Techniques:</strong> ${project['Techniques Used']}</p>
+      <p><strong>Libraries:</strong> ${project['Libraries Used']}</p>
+      <a href="${project['Project URL']}" target="_blank">View Project</a>
     `;
     container.appendChild(card);
   });
 }
 
-window.onload = loadCSV;
+loadCSV();
 </script>
 
 </body>
