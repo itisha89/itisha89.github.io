@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Itisha Sharma - Data Analyst Portfolio</title>
     <style>
-        /* General Styles */
         body {
             font-family: 'Arial', sans-serif;
             margin: 0;
@@ -29,9 +28,7 @@
             font-size: 1.2rem;
             color: #ecf0f1;
         }
-
-        /* Categories */
-        #categories {
+        #categories, #technologies, #techniques, #libraries {
             display: flex;
             justify-content: center;
             margin-top: 2rem;
@@ -39,10 +36,11 @@
             padding: 1rem;
             border-radius: 8px;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            flex-wrap: wrap;
         }
-        #categories button {
+        button {
             padding: 1rem 2rem;
-            margin: 0 1rem;
+            margin: 0.5rem;
             font-size: 1rem;
             cursor: pointer;
             background-color: #3498db;
@@ -51,11 +49,9 @@
             border-radius: 5px;
             transition: background-color 0.3s ease;
         }
-        #categories button:hover {
+        button:hover {
             background-color: #2980b9;
         }
-
-        /* Project Card Styles */
         #projects {
             display: flex;
             flex-wrap: wrap;
@@ -99,8 +95,10 @@
         .project-card a:hover {
             background-color: #2ecc71;
         }
-
-        /* Footer */
+        .project-description {
+            display: none;
+            margin-top: 1rem;
+        }
         footer {
             background-color: #2c3e50;
             color: white;
@@ -117,14 +115,10 @@
     <p>Explore my data-driven projects and insights</p>
 </header>
 
-<div id="categories">
-    <button onclick="filterProjects('All')">All Projects</button>
-    <button onclick="filterProjects('Data Visualization')">Data Visualization</button>
-    <button onclick="filterProjects('Healthcare Analytics')">Healthcare Analytics</button>
-    <button onclick="filterProjects('Geospatial Analysis')">Geospatial Analysis</button>
-    <button onclick="filterProjects('Business Intelligence')">Business Intelligence</button>
-    <button onclick="filterProjects('Environmental Analysis')">Environmental Analysis</button>
-</div>
+<div id="categories"></div>
+<div id="technologies"></div>
+<div id="techniques"></div>
+<div id="libraries"></div>
 
 <div id="projects">
     <!-- Project Cards will be dynamically displayed here -->
@@ -138,7 +132,7 @@
 <script>
 // Your Google Sheets API key and Sheet details
 const sheetId = "12hdkfU0VPSfLPH4gYRWHC3-q48nJBOXKBVnsPjYAg0U"; // Replace with your Google Sheet ID
-const apiKey = "YOUR_API_KEY"; // Replace with your API Key
+const apiKey = "AIzaSyDhuixUu0g5IvSVt4_LWb2Pg3THSn-187E"; // Replace with your API Key
 const sheetName = "Github Project Tracker"; // Your Google Sheets name
 
 // Fetch data from Google Sheets
@@ -151,6 +145,7 @@ async function fetchGoogleSheetData() {
     if (data.values) {
         const projects = data.values.slice(1); // Skip header row
         displayProjects(projects);
+        populateFilters(projects);
     } else {
         console.error("Error fetching data");
     }
@@ -168,33 +163,79 @@ function displayProjects(projects) {
         projectCard.classList.add("project-card");
 
         projectCard.innerHTML = `
-            <h3>${projectName}</h3>
+            <h3 onclick="toggleDescription('${projectName}')">${projectName}</h3>
             <p><strong>Category(s):</strong> ${categories}</p>
             <p><strong>Technologies:</strong> ${technologies}</p>
             <p><strong>Techniques Used:</strong> ${techniques}</p>
             <p><strong>Libraries Used:</strong> ${libraries}</p>
-            <p><strong>Description:</strong> ${description}</p>
-            <a href="${link}" target="_blank">View Project</a>
+            <div id="${projectName}-description" class="project-description">
+                <p><strong>Description:</strong> ${description}</p>
+                <a href="${link}" target="_blank">View Project</a>
+            </div>
         `;
 
         projectsContainer.appendChild(projectCard);
     });
 }
 
-// Filter projects by category
-function filterProjects(category) {
-    fetchGoogleSheetData().then(() => {
-        const projectsContainer = document.getElementById("projects");
-        const allProjects = projectsContainer.querySelectorAll(".project-card");
+// Toggle visibility of project description
+function toggleDescription(projectName) {
+    const description = document.getElementById(`${projectName}-description`);
+    description.style.display = description.style.display === "none" ? "block" : "none";
+}
+
+// Populate filter categories, technologies, techniques, and libraries dynamically
+function populateFilters(projects) {
+    const categoriesContainer = document.getElementById("categories");
+    const technologiesContainer = document.getElementById("technologies");
+    const techniquesContainer = document.getElementById("techniques");
+    const librariesContainer = document.getElementById("libraries");
+
+    const categories = new Set();
+    const technologies = new Set();
+    const techniques = new Set();
+    const libraries = new Set();
+
+    projects.forEach(project => {
+        const [projectName, categoriesList, technologiesList, techniquesList, librariesList] = project;
         
-        allProjects.forEach(card => {
-            const projectCategory = card.querySelector("p").textContent.replace("Category(s):", "").trim();
-            if (category === "All" || projectCategory.includes(category)) {
-                card.style.display = "block";
-            } else {
-                card.style.display = "none";
-            }
-        });
+        categoriesList.split(',').forEach(category => categories.add(category.trim()));
+        technologiesList.split(',').forEach(tech => technologies.add(tech.trim()));
+        techniquesList.split(',').forEach(technique => techniques.add(technique.trim()));
+        librariesList.split(',').forEach(library => libraries.add(library.trim()));
+    });
+
+    createFilterButtons(categories, categoriesContainer, 'Category');
+    createFilterButtons(technologies, technologiesContainer, 'Technologies');
+    createFilterButtons(techniques, techniquesContainer, 'Techniques');
+    createFilterButtons(libraries, librariesContainer, 'Libraries');
+}
+
+// Create filter buttons dynamically
+function createFilterButtons(items, container, label) {
+    const labelElement = document.createElement('p');
+    labelElement.textContent = label + ":";
+    container.appendChild(labelElement);
+
+    items.forEach(item => {
+        const button = document.createElement('button');
+        button.textContent = item;
+        button.onclick = () => filterProjectsByCategory(item);
+        container.appendChild(button);
+    });
+}
+
+// Filter projects by category
+function filterProjectsByCategory(category) {
+    const projectCards = document.querySelectorAll('.project-card');
+
+    projectCards.forEach(card => {
+        const categories = card.querySelector('p').textContent;
+        if (categories.includes(category)) {
+            card.style.display = 'block';
+        } else {
+            card.style.display = 'none';
+        }
     });
 }
 
