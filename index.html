@@ -60,6 +60,11 @@
     .project-card:hover {
       transform: scale(1.05);
     }
+    .project-card a {
+      text-decoration: none;
+      color: #333;
+      font-weight: bold;
+    }
   </style>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
 </head>
@@ -119,7 +124,6 @@ function loadCSV() {
 
 function extractUniqueValues() {
   projects.forEach(project => {
-    // Extracting unique values in lowercase
     categories.add(...project['Category(s)'].toLowerCase().split(',').map(item => item.trim()));
     technologies.add(...project['Technologies'].toLowerCase().split(',').map(item => item.trim()));
     techniques.add(...project['Techniques Used'].toLowerCase().split(',').map(item => item.trim()));
@@ -147,7 +151,7 @@ function populateFilterOptions(filterId, valuesSet) {
   valuesSet.forEach(value => {
     let option = document.createElement("option");
     option.value = value;
-    option.textContent = value;
+    option.textContent = value.charAt(0).toUpperCase() + value.slice(1);
     filter.appendChild(option);
   });
 }
@@ -159,10 +163,10 @@ function filterProjects() {
   const library = document.getElementById("library-filter").value;
 
   const filteredProjects = projects.filter(project => {
-    return (category === "all" || project['Category(s)'].toLowerCase().includes(category)) &&
-           (tech === "all" || project['Technologies'].toLowerCase().includes(tech)) &&
-           (technique === "all" || project['Techniques Used'].toLowerCase().includes(technique)) &&
-           (library === "all" || project['Libraries Used'].toLowerCase().includes(library));
+    return (category === "all" || project['Category(s)'].toLowerCase().split(',').map(item => item.trim()).includes(category)) &&
+           (tech === "all" || project['Technologies'].toLowerCase().split(',').map(item => item.trim()).includes(tech)) &&
+           (technique === "all" || project['Techniques Used'].toLowerCase().split(',').map(item => item.trim()).includes(technique)) &&
+           (library === "all" || project['Libraries Used'].toLowerCase().split(',').map(item => item.trim()).includes(library));
   });
   displayProjects(filteredProjects);
 }
@@ -173,7 +177,11 @@ function displayProjects(filteredProjects) {
   filteredProjects.forEach(project => {
     let card = document.createElement("div");
     card.classList.add("project-card");
-    card.innerHTML = `<h3>${project['Project Name']}</h3><p><strong>Technologies:</strong> ${project['Technologies']}</p>`;
+    card.innerHTML = `
+      <h3>${project['Project Name']}</h3>
+      <p><strong>Description:</strong> ${project['Description']}</p>
+      <a href="${project['Link']}" target="_blank">View Project</a>
+    `;
     container.appendChild(card);
   });
 }
