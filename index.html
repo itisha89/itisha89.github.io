@@ -128,6 +128,9 @@
     <a href="https://github.com/itisha89" target="_blank">
       <img src="https://upload.wikimedia.org/wikipedia/commons/9/91/Octicons-mark-github.svg" alt="GitHub">
     </a>
+    <a href="https://www.canva.com/design/DAGfc7cIYuQ/pNwyvhHJW_817BSEo7G6rA/view?utm_content=DAGfc7cIYuQ&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utlId=h48b44fbe12" target="_blank">
+      <button class="btn-primary">View Resume</button>
+    </a>
   </div>
 </header>
 
@@ -163,10 +166,13 @@
 <footer>
   <div class="social-links">
     <a href="https://www.linkedin.com/in/itishasharmaofficial/" target="_blank">
-      <img src="https://blog.waalaxy.com/wp-content/uploads/2021/01/4-1.png" alt="LinkedIn">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/a/a9/LinkedIn_icon.svg" alt="LinkedIn">
     </a>
     <a href="https://github.com/itisha89" target="_blank">
       <img src="https://upload.wikimedia.org/wikipedia/commons/9/91/Octicons-mark-github.svg" alt="GitHub">
+    </a>
+    <a href="https://www.canva.com/design/DAGfc7cIYuQ/pNwyvhHJW_817BSEo7G6rA/view?utm_content=DAGfc7cIYuQ&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utlId=h48b44fbe12" target="_blank">
+      <button class="btn-primary">View Resume</button>
     </a>
   </div>
 </footer>
@@ -241,26 +247,25 @@ function filterProjects() {
            (techniqueFilter === 'all' || project['Techniques Used'].split(',').map(item => item.trim().toLowerCase()).includes(techniqueFilter)) &&
            (libraryFilter === 'all' || project['Libraries Used'].split(',').map(item => item.trim().toLowerCase()).includes(libraryFilter));
   });
-
   displayProjects(filteredProjects);
 }
 
-function displayProjects(filteredProjects) {
-  const container = document.getElementById('project-cards-container');
-  container.innerHTML = '';
-  filteredProjects.forEach(project => {
-    const card = document.createElement('div');
-    card.className = 'project-card';
+function displayProjects(projects) {
+  const container = document.getElementById("project-cards-container");
+  container.innerHTML = "";
+  projects.forEach(project => {
+    const card = document.createElement("div");
+    card.className = "project-card";
     card.innerHTML = `
       <h3>${project['Project Name']}</h3>
       <p>${project['Description']}</p>
-      <a href="${project['Link']}" target="_blank">View Project</a>
+      <a href="${project['Link']}" target="_blank">See More</a>
     `;
     container.appendChild(card);
   });
 }
 
-loadCSV();
+window.onload = loadCSV;
 </script>
 
 </body>
