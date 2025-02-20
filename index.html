@@ -14,23 +14,24 @@
     header {
       background-color: #333;
       color: #fff;
-      padding: 10px;
+      padding: 15px;
       text-align: center;
+      font-size: 24px;
+      font-weight: bold;
     }
     .dashboard {
       display: flex;
-      justify-content: center;
-      gap: 20px;
+      justify-content: space-around;
+      background-color: #fff;
+      padding: 15px;
       margin: 20px;
-      padding: 20px;
-      background: white;
       border-radius: 8px;
       box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
     }
-    .dashboard div {
-      text-align: center;
+    .dashboard-item {
       font-size: 18px;
       font-weight: bold;
+      color: #333;
     }
     .filter-container {
       text-align: center;
@@ -39,6 +40,7 @@
     select {
       padding: 10px;
       font-size: 16px;
+      margin: 5px;
     }
     .project-cards-container {
       display: flex;
@@ -60,47 +62,72 @@
     .project-card:hover {
       transform: scale(1.05);
     }
+    .project-card h3 {
+      font-size: 18px;
+      margin: 10px 0;
+    }
+    .project-card p {
+      font-size: 14px;
+      color: #555;
+    }
+    .project-card a {
+      color: #3498db;
+      text-decoration: none;
+    }
+    .project-card a:hover {
+      text-decoration: underline;
+    }
   </style>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
 </head>
 <body>
 
 <header>
-  <h1>Itisha Sharma Portfolio</h1>
+  Itisha Sharma Portfolio
 </header>
 
-<div class="dashboard" id="dashboard">
-  <div>Total Projects: <span id="total-projects">0</span></div>
-  <div>Categories: <span id="total-categories">0</span></div>
-  <div>Technologies: <span id="total-technologies">0</span></div>
-  <div>Techniques: <span id="total-techniques">0</span></div>
-  <div>Libraries: <span id="total-libraries">0</span></div>
+<!-- Dashboard Section -->
+<div class="dashboard">
+  <div class="dashboard-item">Total Projects: <span id="total-projects">0</span></div>
+  <div class="dashboard-item">Categories: <span id="total-categories">0</span></div>
+  <div class="dashboard-item">Technologies: <span id="total-technologies">0</span></div>
+  <div class="dashboard-item">Techniques: <span id="total-techniques">0</span></div>
+  <div class="dashboard-item">Libraries: <span id="total-libraries">0</span></div>
 </div>
 
+<!-- Filters -->
 <div class="filter-container">
-  <label for="category-filter">Filter by Category: </label>
+  <label for="category-filter">Category:</label>
   <select id="category-filter" onchange="filterProjects()">
-    <option value="all">All Categories</option>
+    <option value="all">All</option>
   </select>
-  <label for="tech-filter">Filter by Technology: </label>
-  <select id="tech-filter" onchange="filterProjects()">
-    <option value="all">All Technologies</option>
+
+  <label for="technology-filter">Technology:</label>
+  <select id="technology-filter" onchange="filterProjects()">
+    <option value="all">All</option>
   </select>
-  <label for="technique-filter">Filter by Technique: </label>
+
+  <label for="technique-filter">Technique:</label>
   <select id="technique-filter" onchange="filterProjects()">
-    <option value="all">All Techniques</option>
+    <option value="all">All</option>
   </select>
-  <label for="library-filter">Filter by Library: </label>
+
+  <label for="library-filter">Library:</label>
   <select id="library-filter" onchange="filterProjects()">
-    <option value="all">All Libraries</option>
+    <option value="all">All</option>
   </select>
 </div>
 
-<div class="project-cards-container" id="project-cards-container"></div>
+<div class="project-cards-container" id="project-cards-container">
+  <!-- Project Cards will be displayed here -->
+</div>
 
 <script>
 let projects = [];
-let categories = new Set(), technologies = new Set(), techniques = new Set(), libraries = new Set();
+let uniqueCategories = new Set();
+let uniqueTechnologies = new Set();
+let uniqueTechniques = new Set();
+let uniqueLibraries = new Set();
 
 function loadCSV() {
   Papa.parse('https://docs.google.com/spreadsheets/d/e/2PACX-1vTSUGRxg-5qwj4dGT3Dg5VJeRGiUONiwX5yP5eJZyQLCC5kUt895zpJDHq7Z_QtqmK6B5X03hFtqYG9/pub?output=csv', {
@@ -111,40 +138,43 @@ function loadCSV() {
       projects = results.data;
       extractUniqueValues();
       updateDashboard();
-      populateFilters();
+      createFilters();
       filterProjects();
+    },
+    error: function(error) {
+      console.error("Error parsing CSV:", error.message);
     }
   });
 }
 
 function extractUniqueValues() {
   projects.forEach(project => {
-    categories.add(...project['Category(s)'].toLowerCase().split(',').map(item => item.trim()));
-    technologies.add(...project['Technologies'].toLowerCase().split(',').map(item => item.trim()));
-    techniques.add(...project['Techniques Used'].toLowerCase().split(',').map(item => item.trim()));
-    libraries.add(...project['Libraries Used'].toLowerCase().split(',').map(item => item.trim()));
+    project['Category(s)'].toLowerCase().split(',').forEach(cat => uniqueCategories.add(cat.trim()));
+    project['Technologies'].toLowerCase().split(',').forEach(tech => uniqueTechnologies.add(tech.trim()));
+    project['Techniques Used'].toLowerCase().split(',').forEach(technique => uniqueTechniques.add(technique.trim()));
+    project['Libraries Used'].toLowerCase().split(',').forEach(lib => uniqueLibraries.add(lib.trim()));
   });
 }
 
 function updateDashboard() {
   document.getElementById("total-projects").textContent = projects.length;
-  document.getElementById("total-categories").textContent = categories.size;
-  document.getElementById("total-technologies").textContent = technologies.size;
-  document.getElementById("total-techniques").textContent = techniques.size;
-  document.getElementById("total-libraries").textContent = libraries.size;
+  document.getElementById("total-categories").textContent = uniqueCategories.size;
+  document.getElementById("total-technologies").textContent = uniqueTechnologies.size;
+  document.getElementById("total-techniques").textContent = uniqueTechniques.size;
+  document.getElementById("total-libraries").textContent = uniqueLibraries.size;
 }
 
-function populateFilters() {
-  populateFilterOptions("category-filter", categories);
-  populateFilterOptions("tech-filter", technologies);
-  populateFilterOptions("technique-filter", techniques);
-  populateFilterOptions("library-filter", libraries);
+function createFilters() {
+  populateFilter("category-filter", uniqueCategories);
+  populateFilter("technology-filter", uniqueTechnologies);
+  populateFilter("technique-filter", uniqueTechniques);
+  populateFilter("library-filter", uniqueLibraries);
 }
 
-function populateFilterOptions(filterId, valuesSet) {
+function populateFilter(filterId, valuesSet) {
   const filter = document.getElementById(filterId);
   valuesSet.forEach(value => {
-    let option = document.createElement("option");
+    const option = document.createElement("option");
     option.value = value;
     option.textContent = value;
     filter.appendChild(option);
@@ -152,27 +182,33 @@ function populateFilterOptions(filterId, valuesSet) {
 }
 
 function filterProjects() {
-  const category = document.getElementById("category-filter").value;
-  const tech = document.getElementById("tech-filter").value;
-  const technique = document.getElementById("technique-filter").value;
-  const library = document.getElementById("library-filter").value;
+  const categoryFilter = document.getElementById("category-filter").value.toLowerCase();
+  const technologyFilter = document.getElementById("technology-filter").value.toLowerCase();
+  const techniqueFilter = document.getElementById("technique-filter").value.toLowerCase();
+  const libraryFilter = document.getElementById("library-filter").value.toLowerCase();
 
   const filteredProjects = projects.filter(project => {
-    return (category === "all" || project['Category(s)'].toLowerCase().includes(category)) &&
-           (tech === "all" || project['Technologies'].toLowerCase().includes(tech)) &&
-           (technique === "all" || project['Techniques Used'].toLowerCase().includes(technique)) &&
-           (library === "all" || project['Libraries Used'].toLowerCase().includes(library));
+    return (categoryFilter === "all" || project['Category(s)'].toLowerCase().includes(categoryFilter)) &&
+           (technologyFilter === "all" || project['Technologies'].toLowerCase().includes(technologyFilter)) &&
+           (techniqueFilter === "all" || project['Techniques Used'].toLowerCase().includes(techniqueFilter)) &&
+           (libraryFilter === "all" || project['Libraries Used'].toLowerCase().includes(libraryFilter));
   });
+
   displayProjects(filteredProjects);
 }
 
 function displayProjects(filteredProjects) {
   const container = document.getElementById("project-cards-container");
   container.innerHTML = '';
+
   filteredProjects.forEach(project => {
-    let card = document.createElement("div");
+    const card = document.createElement("div");
     card.classList.add("project-card");
-    card.innerHTML = `<h3>${project['Project Name']}</h3><p><strong>Technologies:</strong> ${project['Technologies']}</p>`;
+    card.innerHTML = `
+      <h3>${project['Project Name']}</h3>
+      <p>${project['Description']}</p>
+      <a href="${project['Link']}" target="_blank">View Project</a>
+    `;
     container.appendChild(card);
   });
 }
