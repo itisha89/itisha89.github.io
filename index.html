@@ -15,7 +15,7 @@
     }
 
     header {
-      background-color: #62b6cb;
+      background-color: #333;
       color: white;
       padding: 20px;
       text-align: center;
@@ -30,13 +30,13 @@
     }
 
     .social-links a {
-      margin: 0 10px;
+      margin: 0 15px;
       text-decoration: none;
     }
 
     .social-links img {
-      width: 24px;
-      height: 24px;
+      width: 36px; /* Increased size */
+      height: 36px; /* Increased size */
       transition: transform 0.3s ease;
     }
 
@@ -182,7 +182,7 @@
       <img src="https://upload.wikimedia.org/wikipedia/commons/9/91/Octicons-mark-github.svg" alt="GitHub">
     </a>
     <a href="https://www.canva.com/design/DAGfc7cIYuQ/pNwyvhHJW_817BSEo7G6rA/view?utm_content=DAGfc7cIYuQ&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utlId=h48b44fbe12" target="_blank">
-      <button class="btn-primary">View Resume</button>
+      <img src="https://upload.wikimedia.org/wikipedia/commons/4/47/Canva_Logo.svg" alt="Resume" width="36" height="36"> <!-- Resume Icon -->
     </a>
   </div>
 </footer>
@@ -256,7 +256,6 @@ function displayProjects(filteredProjects) {
     <p><em>${categories}</em></p>
     <p>${description}</p>
     <a href="${projectLink}" target="_blank">View Project</a>
-    
   `;
 
     container.appendChild(listItem);
