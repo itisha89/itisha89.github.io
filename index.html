@@ -5,104 +5,22 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Itisha Sharma Portfolio</title>
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 0;
-      padding: 0;
-    }
-
-    header {
-      background-color: #333;
-      color: white;
-      text-align: center;
-      padding: 1rem;
-    }
-
-    header h1 {
-      margin: 0;
-    }
-
-    .social-links a {
-      margin: 0 10px;
-      text-decoration: none;
-    }
-
-    .social-links img {
-      width: 30px;
-      height: 30px;
-    }
-
-    .btn-primary {
-      padding: 10px 20px;
-      background-color: #4CAF50;
-      color: white;
-      border: none;
-      cursor: pointer;
-      text-decoration: none;
-    }
-
-    .dashboard {
-      padding: 20px;
-      background-color: #f4f4f4;
-      margin-bottom: 20px;
-      display: flex;
-      justify-content: space-around;
-      text-align: center;
-    }
-
+    /* Add your styles here */
     .filter-container {
-      padding: 20px;
       display: flex;
-      gap: 20px;
+      flex-wrap: wrap;
+      gap: 10px;
     }
-
     .filter-container label {
       margin-right: 10px;
     }
-
-    .filter-container select {
-      padding: 5px;
+    .filter-container input[type="checkbox"] {
+      margin-right: 5px;
     }
-
-    .tabs {
-      display: flex;
-      justify-content: space-around;
-      background-color: #333;
-      color: white;
-      padding: 10px;
-    }
-
-    .tabs button {
-      background-color: transparent;
-      color: white;
-      border: none;
-      padding: 10px;
-      cursor: pointer;
-    }
-
-    .tabs button.active {
-      background-color: #4CAF50;
-    }
-
-    .project-cards-container {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 20px;
-      padding: 20px;
-    }
-
     .project-card {
-      background-color: white;
-      border: 1px solid #ddd;
-      padding: 15px;
-      border-radius: 5px;
-    }
-
-    footer {
-      background-color: #333;
-      color: white;
-      padding: 1rem;
-      text-align: center;
+      border: 1px solid #ccc;
+      padding: 10px;
+      margin: 10px 0;
     }
   </style>
 </head>
@@ -123,16 +41,23 @@
   </div>
 </header>
 
-<div class="dashboard" id="dashboard">
-  <div>Total Projects: <span id="total-projects">0</span></div>
-  <div>Categories: <span id="total-categories">0</span></div>
-  <div>Technologies: <span id="total-technologies">0</span></div>
-  <div>Techniques: <span id="total-techniques">0</span></div>
-  <div>Libraries: <span id="total-libraries">0</span></div>
-</div>
-
-<div class="tabs" id="category-tabs">
-  <!-- Category tabs will be populated here -->
+<div class="filter-container">
+  <div>
+    <label for="category-filter">Filter by Category:</label>
+    <div id="category-filter"></div>
+  </div>
+  <div>
+    <label for="tech-filter">Filter by Technology:</label>
+    <div id="tech-filter"></div>
+  </div>
+  <div>
+    <label for="technique-filter">Filter by Technique:</label>
+    <div id="technique-filter"></div>
+  </div>
+  <div>
+    <label for="library-filter">Filter by Library:</label>
+    <div id="library-filter"></div>
+  </div>
 </div>
 
 <div class="project-cards-container" id="project-cards-container"></div>
@@ -164,8 +89,7 @@ function loadCSV() {
     complete: function(results) {
       projects = results.data;
       extractUniqueValues();
-      updateDashboard();
-      populateTabs();
+      populateFilters();
       filterProjects();
     }
   });
@@ -184,36 +108,43 @@ function extractValues(field, targetSet) {
   field.split(',').map(item => item.trim().toLowerCase()).forEach(item => targetSet.add(item));
 }
 
-function updateDashboard() {
-  document.getElementById("total-projects").textContent = projects.length;
-  document.getElementById("total-categories").textContent = categories.size;
-  document.getElementById("total-technologies").textContent = technologies.size;
-  document.getElementById("total-techniques").textContent = techniques.size;
-  document.getElementById("total-libraries").textContent = libraries.size;
+function populateFilters() {
+  populateFilterOptions("category-filter", Array.from(categories).sort());
+  populateFilterOptions("tech-filter", Array.from(technologies).sort());
+  populateFilterOptions("technique-filter", Array.from(techniques).sort());
+  populateFilterOptions("library-filter", Array.from(libraries).sort());
 }
 
-function populateTabs() {
-  const tabContainer = document.getElementById('category-tabs');
-  Array.from(categories).forEach(category => {
-    const tabButton = document.createElement('button');
-    tabButton.textContent = category.charAt(0).toUpperCase() + category.slice(1);
-    tabButton.addEventListener('click', () => onCategoryTabClick(category));
-    tabContainer.appendChild(tabButton);
+function populateFilterOptions(id, items) {
+  const filterContainer = document.getElementById(id);
+  items.forEach(item => {
+    const label = document.createElement('label');
+    label.textContent = item.charAt(0).toUpperCase() + item.slice(1);
+    
+    const checkbox = document.createElement('input');
+    checkbox.type = 'checkbox';
+    checkbox.value = item;
+    checkbox.onclick = filterProjects;
+    
+    label.prepend(checkbox);
+    filterContainer.appendChild(label);
+    filterContainer.appendChild(document.createElement('br'));
   });
 }
 
-function onCategoryTabClick(category) {
-  // Add or remove the 'active' class to show which tab is selected
-  const tabs = document.querySelectorAll('.tabs button');
-  tabs.forEach(tab => tab.classList.remove('active'));
-  event.target.classList.add('active');
-  
-  filterProjects(category); // Apply filter to the selected category
-}
+function filterProjects() {
+  const categoryFilter = Array.from(document.querySelectorAll("#category-filter input:checked")).map(checkbox => checkbox.value);
+  const techFilter = Array.from(document.querySelectorAll("#tech-filter input:checked")).map(checkbox => checkbox.value);
+  const techniqueFilter = Array.from(document.querySelectorAll("#technique-filter input:checked")).map(checkbox => checkbox.value);
+  const libraryFilter = Array.from(document.querySelectorAll("#library-filter input:checked")).map(checkbox => checkbox.value);
 
-function filterProjects(category = 'all') {
   const filteredProjects = projects.filter(project => {
-    return category === 'all' || project['Category(s)'].toLowerCase().includes(category.toLowerCase());
+    return (
+      (categoryFilter.length === 0 || categoryFilter.some(filter => project['Category(s)'].toLowerCase().includes(filter))) &&
+      (techFilter.length === 0 || techFilter.some(filter => project['Technologies'].toLowerCase().includes(filter))) &&
+      (techniqueFilter.length === 0 || techniqueFilter.some(filter => project['Techniques Used'].toLowerCase().includes(filter))) &&
+      (libraryFilter.length === 0 || libraryFilter.some(filter => project['Libraries Used'].toLowerCase().includes(filter)))
+    );
   });
 
   displayProjects(filteredProjects);
@@ -231,7 +162,7 @@ function displayProjects(filteredProjects) {
     const description = project['Description'];
     const projectLink = project['Link']; // From the Link column
 
-    card.innerHTML = `
+    card.innerHTML = ` 
       <h3>${projectName}</h3>
       <p>${description}</p>
       <a href="${projectLink}" target="_blank">View Project</a>
