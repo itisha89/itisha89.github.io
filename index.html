@@ -13,7 +13,7 @@
       box-sizing: border-box;
       background-color: #f4f4f9;
     }
-    
+
     header {
       background-color: #333;
       color: white;
@@ -50,6 +50,7 @@
       background-color: #fff;
       border-radius: 8px;
       box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      width: 25%;
     }
 
     .filter-container label {
@@ -65,31 +66,32 @@
       margin-bottom: 10px;
     }
 
-    .project-cards-container {
+    .projects-container {
       display: flex;
-      flex-wrap: wrap;
-      gap: 20px;
-      justify-content: center;
-      margin: 20px;
+      flex-direction: column;
+      margin-left: 30px;
+      width: 70%;
     }
 
-    .project-card {
-      border: 1px solid #ccc;
-      padding: 20px;
-      width: 300px;
+    .project-list {
+      list-style-type: none;
+      padding: 0;
+    }
+
+    .project-item {
+      padding: 10px;
+      margin: 10px 0;
       background-color: #fff;
+      border: 1px solid #ccc;
       border-radius: 8px;
       box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-      text-align: center;
+      cursor: pointer;
       transition: transform 0.3s ease;
     }
 
-    .project-card:hover {
+    .project-item:hover {
       transform: scale(1.05);
-    }
-
-    .project-card h3 {
-      margin-top: 0;
+      background-color: #f0f0f0;
     }
 
     footer {
@@ -120,28 +122,14 @@
 
     /* Responsive Design */
     @media (max-width: 768px) {
-      .project-cards-container {
-        flex-direction: column;
-        align-items: center;
+      .filter-container {
+        width: 100%;
+        margin-bottom: 20px;
       }
 
-      .project-card {
-        width: 90%;
-      }
-    }
-
-    @media (max-width: 480px) {
-      header h1 {
-        font-size: 1.5em;
-      }
-
-      .social-links img {
-        width: 20px;
-        height: 20px;
-      }
-
-      footer button {
-        padding: 8px 16px;
+      .projects-container {
+        width: 100%;
+        margin-left: 0;
       }
     }
   </style>
@@ -163,14 +151,20 @@
   </div>
 </header>
 
-<div class="filter-container">
-  <div>
-    <label for="category-filter">Filter by Category:</label>
-    <div id="category-filter"></div>
+<div style="display: flex; justify-content: space-between; padding: 20px;">
+  <!-- Filter Section -->
+  <div class="filter-container">
+    <div>
+      <label for="category-filter">Filter by Category:</label>
+      <div id="category-filter"></div>
+    </div>
+  </div>
+
+  <!-- Project List Section -->
+  <div class="projects-container">
+    <ul class="project-list" id="project-list"></ul>
   </div>
 </div>
-
-<div class="project-cards-container" id="project-cards-container"></div>
 
 <footer>
   <div class="social-links">
@@ -249,25 +243,25 @@ function filterProjects() {
 }
 
 function displayProjects(filteredProjects) {
-  const container = document.getElementById("project-cards-container");
+  const container = document.getElementById("project-list");
   container.innerHTML = ''; // Clear existing projects
   
   filteredProjects.forEach(project => {
-    const card = document.createElement('div');
-    card.classList.add('project-card');
+    const listItem = document.createElement('li');
+    listItem.classList.add('project-item');
     
     const projectName = project['Project Name'];
     const description = project['Description'];
-    const projectLink = project['Link']; // From the Link column
-
-    card.innerHTML = ` 
-      <h3>${projectName}</h3>
-      <p>${description}</p>
-      <a href="${projectLink}" target="_blank">View Project</a>
-    `;
     
-    container.appendChild(card);
+    listItem.innerHTML = `${projectName} - ${description}`;
+    listItem.onclick = () => showProjectDetails(project);
+    
+    container.appendChild(listItem);
   });
+}
+
+function showProjectDetails(project) {
+  alert(`Project Name: ${project['Project Name']}\nDescription: ${project['Description']}\nLink: ${project['Link']}`);
 }
 
 loadCSV();
