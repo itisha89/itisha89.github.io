@@ -11,6 +11,7 @@
       padding: 0;
       background-color: #EDF6F9; /* Light Blue */
       color: #333;
+      display: flex;
     }
     header {
       display: flex;
@@ -20,6 +21,7 @@
       color: #fff;
       padding: 20px 30px;
       box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      width: 100%;
     }
     header h1 {
       margin: 0;
@@ -52,9 +54,10 @@
       font-weight: bold;
     }
     .filter-container {
-      text-align: center;
+      text-align: left;
       margin: 20px;
       font-size: 16px;
+      width: 250px;
     }
     select {
       padding: 12px;
@@ -69,6 +72,7 @@
       justify-content: center;
       gap: 30px;
       margin-top: 40px;
+      flex: 1;
     }
     .project-card {
       background-color: #F2E9E4; 
@@ -114,168 +118,167 @@
     .btn-primary:hover {
       background-color: #E29578; /* Peach on hover */
     }
+    .project-details {
+      margin-top: 30px;
+      padding: 20px;
+      background-color: #fff;
+      border-radius: 8px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+      width: 100%;
+      display: none;
+    }
+    .project-details h3 {
+      font-size: 24px;
+    }
+    .project-details p {
+      font-size: 16px;
+    }
+    .project-details a {
+      font-size: 16px;
+      font-weight: bold;
+      color: #006D77;
+    }
   </style>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
 </head>
 <body>
 
-<header>
-  <h1>Itisha Sharma Portfolio</h1>
-  <div class="social-links">
-    <a href="https://www.linkedin.com/in/itishasharmaofficial/" target="_blank">
-      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/81/LinkedIn_icon.svg/2048px-LinkedIn_icon.svg.png" alt="LinkedIn">
-    </a>
-    <a href="https://github.com/itisha89" target="_blank">
-      <img src="https://upload.wikimedia.org/wikipedia/commons/9/91/Octicons-mark-github.svg" alt="GitHub">
-    </a>
-    <a href="https://www.canva.com/design/DAGfc7cIYuQ/pNwyvhHJW_817BSEo7G6rA/view?utm_content=DAGfc7cIYuQ&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utlId=h48b44fbe12" target="_blank">
-      <button class="btn-primary">View Resume</button>
-    </a>
+  <header>
+    <h1>Itisha Sharma Portfolio</h1>
+    <div class="social-links">
+      <a href="https://www.linkedin.com/in/itishasharmaofficial/" target="_blank">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/81/LinkedIn_icon.svg/2048px-LinkedIn_icon.svg.png" alt="LinkedIn">
+      </a>
+      <a href="https://github.com/itisha89" target="_blank">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/9/91/Octicons-mark-github.svg" alt="GitHub">
+      </a>
+      <a href="https://www.canva.com/design/DAGfc7cIYuQ/pNwyvhHJW_817BSEo7G6rA/view?utm_content=DAGfc7cIYuQ&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utlId=h48b44fbe12" target="_blank">
+        <button class="btn-primary">View Resume</button>
+      </a>
+    </div>
+  </header>
+
+  <div class="dashboard" id="dashboard">
+    <div>Total Projects: <span id="total-projects">0</span></div>
+    <div>Categories: <span id="total-categories">0</span></div>
+    <div>Technologies: <span id="total-technologies">0</span></div>
+    <div>Techniques: <span id="total-techniques">0</span></div>
+    <div>Libraries: <span id="total-libraries">0</span></div>
   </div>
-</header>
 
-<div class="dashboard" id="dashboard">
-  <div>Total Projects: <span id="total-projects">0</span></div>
-  <div>Categories: <span id="total-categories">0</span></div>
-  <div>Technologies: <span id="total-technologies">0</span></div>
-  <div>Techniques: <span id="total-techniques">0</span></div>
-  <div>Libraries: <span id="total-libraries">0</span></div>
-</div>
-
-<div class="filter-container">
-  <label for="category-filter">Filter by Category: </label>
-  <select id="category-filter" onchange="filterProjects()">
-    <option value="all">All Categories</option>
-  </select>
-  <label for="tech-filter">Filter by Technology: </label>
-  <select id="tech-filter" onchange="filterProjects()">
-    <option value="all">All Technologies</option>
-  </select>
-  <label for="technique-filter">Filter by Technique: </label>
-  <select id="technique-filter" onchange="filterProjects()">
-    <option value="all">All Techniques</option>
-  </select>
-  <label for="library-filter">Filter by Library: </label>
-  <select id="library-filter" onchange="filterProjects()">
-    <option value="all">All Libraries</option>
-  </select>
-</div>
-
-<div class="project-cards-container" id="project-cards-container"></div>
-
-<footer>
-  <div class="social-links">
-    <a href="https://www.linkedin.com/in/itishasharmaofficial/" target="_blank">
-      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/81/LinkedIn_icon.svg/2048px-LinkedIn_icon.svg.png" alt="LinkedIn">
-    </a>
-    <a href="https://github.com/itisha89" target="_blank">
-      <img src="https://upload.wikimedia.org/wikipedia/commons/9/91/Octicons-mark-github.svg" alt="GitHub">
-    </a>
-    <a href="https://www.canva.com/design/DAGfc7cIYuQ/pNwyvhHJW_817BSEo7G6rA/view?utm_content=DAGfc7cIYuQ&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utlId=h48b44fbe12" target="_blank">
-      <button class="btn-primary">View Resume</button>
-    </a>
+  <div class="filter-container">
+    <label for="category-filter">Filter by Category: </label>
+    <select id="category-filter" onchange="filterProjects()">
+      <option value="all">All Categories</option>
+    </select>
   </div>
-</footer>
 
-<script>
-let projects = [];
-let categories = new Set(), technologies = new Set(), techniques = new Set(), libraries = new Set();
+  <div class="project-cards-container" id="project-cards-container"></div>
 
-function loadCSV() {
-  Papa.parse('https://docs.google.com/spreadsheets/d/e/2PACX-1vTSUGRxg-5qwj4dGT3Dg5VJeRGiUONiwX5yP5eJZyQLCC5kUt895zpJDHq7Z_QtqmK6B5X03hFtqYG9/pub?output=csv', {
-    download: true,
-    header: true,
-    dynamicTyping: true,
-    complete: function(results) {
-      projects = results.data;
-      extractUniqueValues();
-      updateDashboard();
-      populateFilters();
-      filterProjects();
+  <div class="project-details" id="project-details">
+    <h3>Project Details</h3>
+    <p><strong>Technology:</strong> <span id="tech-details"></span></p>
+    <p><strong>Library:</strong> <span id="lib-details"></span></p>
+    <p><strong>Project Link:</strong> <a id="project-link" href="" target="_blank">View Project</a></p>
+  </div>
+
+  <footer>
+    <div class="social-links">
+      <a href="https://www.linkedin.com/in/itishasharmaofficial/" target="_blank">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/81/LinkedIn_icon.svg/2048px-LinkedIn_icon.svg.png" alt="LinkedIn">
+      </a>
+      <a href="https://github.com/itisha89" target="_blank">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/9/91/Octicons-mark-github.svg" alt="GitHub">
+      </a>
+      <a href="https://www.canva.com/design/DAGfc7cIYuQ/pNwyvhHJW_817BSEo7G6rA/view?utm_content=DAGfc7cIYuQ&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utlId=h48b44fbe12" target="_blank">
+        <button class="btn-primary">View Resume</button>
+      </a>
+    </div>
+  </footer>
+
+  <script>
+    let projects = [];
+    let categories = new Set(), technologies = new Set(), techniques = new Set(), libraries = new Set();
+
+    function loadCSV() {
+      Papa.parse('https://docs.google.com/spreadsheets/d/e/2PACX-1vTSUGRxg-5qwj4dGT3Dg5VJeRGiUONiwX5yP5eJZyQLCC5kUt895zpJDHq7Z_QtqmK6B5X03hFtqYG9/pub?output=csv', {
+        download: true,
+        header: true,
+        dynamicTyping: true,
+        complete: function(results) {
+          projects = results.data;
+          extractUniqueValues();
+          updateDashboard();
+          populateFilters();
+          filterProjects();
+        }
+      });
     }
-  });
-}
 
-function extractUniqueValues() {
-  projects.forEach(project => {
-    extractValues(project['Category(s)'], categories);
-    extractValues(project['Technologies'], technologies);
-    extractValues(project['Techniques Used'], techniques);
-    extractValues(project['Libraries Used'], libraries);
-  });
-}
+    function extractUniqueValues() {
+      projects.forEach(project => {
+        extractValues(project['Category(s)'], categories);
+        extractValues(project['Technologies'], technologies);
+        extractValues(project['Techniques Used'], techniques);
+        extractValues(project['Libraries Used'], libraries);
+      });
+    }
 
-function extractValues(field, targetSet) {
-  field.split(',').map(item => item.trim().toLowerCase()).forEach(item => targetSet.add(item));
-}
+    function extractValues(field, targetSet) {
+      field.split(',').map(item => item.trim().toLowerCase()).forEach(item => targetSet.add(item));
+    }
 
-function updateDashboard() {
-  document.getElementById("total-projects").textContent = projects.length;
-  document.getElementById("total-categories").textContent = categories.size;
-  document.getElementById("total-technologies").textContent = technologies.size;
-  document.getElementById("total-techniques").textContent = techniques.size;
-  document.getElementById("total-libraries").textContent = libraries.size;
-}
+    function updateDashboard() {
+      document.getElementById("total-projects").textContent = projects.length;
+      document.getElementById("total-categories").textContent = categories.size;
+      document.getElementById("total-technologies").textContent = technologies.size;
+      document.getElementById("total-techniques").textContent = techniques.size;
+      document.getElementById("total-libraries").textContent = libraries.size;
+    }
 
-function populateFilters() {
-  populateFilterOptions("category-filter", Array.from(categories).sort());
-  populateFilterOptions("tech-filter", Array.from(technologies).sort());
-  populateFilterOptions("technique-filter", Array.from(techniques).sort());
-  populateFilterOptions("library-filter", Array.from(libraries).sort());
-}
+    function populateFilters() {
+      populateFilterOptions("category-filter", Array.from(categories).sort());
+    }
 
-function populateFilterOptions(id, items) {
-  const filter = document.getElementById(id);
-  items.forEach(item => {
-    const option = document.createElement('option');
-    option.value = item;
-    option.textContent = item.charAt(0).toUpperCase() + item.slice(1);
-    filter.appendChild(option);
-  });
-}
+    function populateFilterOptions(id, items) {
+      const filter = document.getElementById(id);
+      items.forEach(item => {
+        const option = document.createElement('option');
+        option.value = item;
+        option.textContent = item.charAt(0).toUpperCase() + item.slice(1);
+        filter.appendChild(option);
+      });
+    }
 
-function filterProjects() {
-  const categoryFilter = document.getElementById("category-filter").value;
-  const techFilter = document.getElementById("tech-filter").value;
-  const techniqueFilter = document.getElementById("technique-filter").value;
-  const libraryFilter = document.getElementById("library-filter").value;
+    function filterProjects() {
+      const categoryFilter = document.getElementById("category-filter").value;
+      const filteredProjects = categoryFilter === "all" 
+        ? projects 
+        : projects.filter(project => project['Category(s)'].toLowerCase().split(',').map(item => item.trim()).includes(categoryFilter));
+      
+      displayProjects(filteredProjects);
+    }
 
-  const filteredProjects = projects.filter(project => {
-    return (
-      (categoryFilter === 'all' || project['Category(s)'].toLowerCase().includes(categoryFilter)) &&
-      (techFilter === 'all' || project['Technologies'].toLowerCase().includes(techFilter)) &&
-      (techniqueFilter === 'all' || project['Techniques Used'].toLowerCase().includes(techniqueFilter)) &&
-      (libraryFilter === 'all' || project['Libraries Used'].toLowerCase().includes(libraryFilter))
-    );
-  });
+    function displayProjects(filteredProjects) {
+      const projectContainer = document.getElementById("project-cards-container");
+      projectContainer.innerHTML = '';
+      filteredProjects.forEach(project => {
+        const card = document.createElement('div');
+        card.classList.add('project-card');
+        card.innerHTML = `<h4>${project['Project Name']}</h4>`;
+        card.onclick = () => showProjectDetails(project);
+        projectContainer.appendChild(card);
+      });
+    }
 
-  displayProjects(filteredProjects);
-}
+    function showProjectDetails(project) {
+      document.getElementById("tech-details").textContent = project['Technologies'];
+      document.getElementById("lib-details").textContent = project['Libraries Used'];
+      document.getElementById("project-link").href = project['Project Link'];
+      document.getElementById("project-details").style.display = 'block';
+    }
 
-function displayProjects(filteredProjects) {
-  const container = document.getElementById("project-cards-container");
-  container.innerHTML = ''; // Clear existing projects
-  
-  filteredProjects.forEach(project => {
-    const card = document.createElement('div');
-    card.classList.add('project-card');
-    
-    const projectName = project['Project Name'];
-    const description = project['Description'];
-    const projectLink = project['Link']; // From the Link column
-
-    card.innerHTML = `
-      <h3>${projectName}</h3>
-      <p>${description}</p>
-      <a href="${projectLink}" target="_blank">View Project</a>
-    `;
-    
-    container.appendChild(card);
-  });
-}
-
-loadCSV();
-</script>
-
+    loadCSV();
+  </script>
 </body>
 </html>
