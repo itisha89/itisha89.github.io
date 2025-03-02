@@ -12,6 +12,8 @@
       background-color: #EDF6F9; /* Light Blue */
       color: #333;
       display: flex;
+      height: 100vh;
+      overflow: hidden;
     }
     header {
       display: flex;
@@ -58,6 +60,10 @@
       margin: 20px;
       font-size: 16px;
       width: 250px;
+      position: fixed;
+      top: 120px;
+      left: 30px;
+      z-index: 10;
     }
     select {
       padding: 12px;
@@ -65,6 +71,7 @@
       border: 1px solid #ccc;
       border-radius: 5px;
       background-color: #fff;
+      width: 100%;
     }
     .project-cards-container {
       display: flex;
@@ -72,7 +79,9 @@
       justify-content: center;
       gap: 30px;
       margin-top: 40px;
+      padding-left: 300px; /* Adjusted to make room for the filter */
       flex: 1;
+      overflow-y: auto;
     }
     .project-card {
       background-color: #F2E9E4; 
@@ -224,8 +233,10 @@
       });
     }
 
-    function extractValues(field, targetSet) {
-      field.split(',').map(item => item.trim().toLowerCase()).forEach(item => targetSet.add(item));
+    function extractValues(field, set) {
+      if (field) {
+        field.split(',').forEach(value => set.add(value.trim()));
+      }
     }
 
     function updateDashboard() {
@@ -237,16 +248,12 @@
     }
 
     function populateFilters() {
-      populateFilterOptions("category-filter", Array.from(categories).sort());
-    }
-
-    function populateFilterOptions(id, items) {
-      const filter = document.getElementById(id);
-      items.forEach(item => {
-        const option = document.createElement('option');
-        option.value = item;
-        option.textContent = item.charAt(0).toUpperCase() + item.slice(1);
-        filter.appendChild(option);
+      const filterSelect = document.getElementById("category-filter");
+      categories.forEach(category => {
+        const option = document.createElement("option");
+        option.value = category.toLowerCase();
+        option.textContent = category;
+        filterSelect.appendChild(option);
       });
     }
 
@@ -274,7 +281,7 @@
     function showProjectDetails(project) {
       document.getElementById("tech-details").textContent = project['Technologies'];
       document.getElementById("lib-details").textContent = project['Libraries Used'];
-      document.getElementById("project-link").href = project['Project Link'];
+      document.getElementById("project-link").href = project['Link']; // Link column used here
       document.getElementById("project-details").style.display = 'block';
     }
 
