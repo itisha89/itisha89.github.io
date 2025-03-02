@@ -5,204 +5,244 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Itisha Sharma Portfolio</title>
   <style>
-    * {
+    body {
+      font-family: Arial, sans-serif;
       margin: 0;
       padding: 0;
-      box-sizing: border-box;
-    }
-
-    body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background-color: #f4f6f9;
-      color: #333;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding-top: 40px;
     }
 
     header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      width: 100%;
-      max-width: 1200px;
-      padding: 20px 30px;
-      background-color: #006D77;
-      color: #fff;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      background-color: #333;
+      color: white;
+      text-align: center;
+      padding: 1rem;
     }
 
     header h1 {
-      font-size: 30px;
+      margin: 0;
     }
 
-    /* Category filter */
-    .filter-container {
-      max-width: 1200px;
-      margin-top: 30px;
+    .social-links a {
+      margin: 0 10px;
+      text-decoration: none;
     }
 
-    .category-filter {
+    .social-links img {
+      width: 30px;
+      height: 30px;
+    }
+
+    .btn-primary {
+      padding: 10px 20px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      cursor: pointer;
+      text-decoration: none;
+    }
+
+    .dashboard {
+      padding: 20px;
+      background-color: #f4f4f4;
+      margin-bottom: 20px;
       display: flex;
-      flex-wrap: wrap;
+      justify-content: space-around;
+      text-align: center;
+    }
+
+    .filter-container {
+      padding: 20px;
+      display: flex;
       gap: 20px;
     }
 
-    .category-filter label {
-      font-size: 18px;
+    .filter-container label {
       margin-right: 10px;
     }
 
-    .category-filter input {
-      margin-right: 10px;
+    .filter-container select {
+      padding: 5px;
     }
 
-    /* Project list */
-    .projects-container {
+    .tabs {
       display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 30px;
-      width: 100%;
-      max-width: 1200px;
-      margin-top: 40px;
+      justify-content: space-around;
+      background-color: #333;
+      color: white;
+      padding: 10px;
+    }
+
+    .tabs button {
+      background-color: transparent;
+      color: white;
+      border: none;
+      padding: 10px;
+      cursor: pointer;
+    }
+
+    .tabs button.active {
+      background-color: #4CAF50;
+    }
+
+    .project-cards-container {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+      padding: 20px;
     }
 
     .project-card {
-      background-color: #F2E9E4;
-      border: 1px solid #22223B;
-      border-radius: 8px;
-      padding: 20px;
-      width: 300px;
-      text-align: center;
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-      transition: all 0.3s ease;
-    }
-
-    .project-card:hover {
-      transform: translateY(-10px);
-      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
-    }
-
-    .project-card img {
-      width: 100%;
-      height: 150px;
-      object-fit: cover;
+      background-color: white;
+      border: 1px solid #ddd;
+      padding: 15px;
       border-radius: 5px;
     }
 
-    .project-card h3 {
-      margin-top: 10px;
-      font-size: 18px;
-      color: #22223B;
-    }
-
-    .project-card p {
-      color: #555;
-      margin-top: 8px;
-    }
-
-    .project-card a {
-      margin-top: 10px;
-      display: inline-block;
-      color: #006D77;
-      text-decoration: none;
-      font-weight: bold;
-    }
-
-    /* Footer styling */
     footer {
-      text-align: center;
-      padding: 20px;
-      background-color: #22223B;
+      background-color: #333;
       color: white;
-      width: 100%;
-      bottom: 0;
-      position: relative;
+      padding: 1rem;
+      text-align: center;
     }
   </style>
 </head>
 <body>
 
-  <header>
-    <h1>Itisha Sharma Portfolio</h1>
-  </header>
-
-  <!-- Category Filter (Checkbox) -->
-  <div class="filter-container">
-    <div class="category-filter">
-      <label><input type="checkbox" class="category-checkbox" value="Data Visualization"> Data Visualization</label>
-      <label><input type="checkbox" class="category-checkbox" value="Healthcare Analytics"> Healthcare Analytics</label>
-      <label><input type="checkbox" class="category-checkbox" value="Machine Learning"> Machine Learning</label>
-      <!-- Add more categories as necessary -->
-    </div>
+<header>
+  <h1>Itisha Sharma Portfolio</h1>
+  <div class="social-links">
+    <a href="https://www.linkedin.com/in/itishasharmaofficial/" target="_blank">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/81/LinkedIn_icon.svg/2048px-LinkedIn_icon.svg.png" alt="LinkedIn">
+    </a>
+    <a href="https://github.com/itisha89" target="_blank">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/9/91/Octicons-mark-github.svg" alt="GitHub">
+    </a>
+    <a href="https://www.canva.com/design/DAGfc7cIYuQ/pNwyvhHJW_817BSEo7G6rA/view?utm_content=DAGfc7cIYuQ&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utlId=h48b44fbe12" target="_blank">
+      <button class="btn-primary">View Resume</button>
+    </a>
   </div>
+</header>
 
-  <!-- Project List -->
-  <div class="projects-container" id="projects-container">
-    <!-- Projects will be dynamically loaded here -->
+<div class="dashboard" id="dashboard">
+  <div>Total Projects: <span id="total-projects">0</span></div>
+  <div>Categories: <span id="total-categories">0</span></div>
+  <div>Technologies: <span id="total-technologies">0</span></div>
+  <div>Techniques: <span id="total-techniques">0</span></div>
+  <div>Libraries: <span id="total-libraries">0</span></div>
+</div>
+
+<div class="tabs" id="category-tabs">
+  <!-- Category tabs will be populated here -->
+</div>
+
+<div class="project-cards-container" id="project-cards-container"></div>
+
+<footer>
+  <div class="social-links">
+    <a href="https://www.linkedin.com/in/itishasharmaofficial/" target="_blank">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/81/LinkedIn_icon.svg/2048px-LinkedIn_icon.svg.png" alt="LinkedIn">
+    </a>
+    <a href="https://github.com/itisha89" target="_blank">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/9/91/Octicons-mark-github.svg" alt="GitHub">
+    </a>
+    <a href="https://www.canva.com/design/DAGfc7cIYuQ/pNwyvhHJW_817BSEo7G6rA/view?utm_content=DAGfc7cIYuQ&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utlId=h48b44fbe12" target="_blank">
+      <button class="btn-primary">View Resume</button>
+    </a>
   </div>
+</footer>
 
-  <footer>
-    <p>© 2025 Itisha Sharma. All rights reserved.</p>
-  </footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
+<script>
+let projects = [];
+let categories = new Set(), technologies = new Set(), techniques = new Set(), libraries = new Set();
 
-  <!-- Tabletop.js Script -->
-  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/tabletop@1.6.1/tabletop.min.js"></script>
-  <script>
-    let projectsData = [];
-
-    // Initialize Tabletop.js to fetch the Google Sheet data
-    function init() {
-      Tabletop.init({
-        key: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTSUGRxg-5qwj4dGT3Dg5VJeRGiUONiwX5yP5eJZyQLCC5kUt895zpJDHq7Z_QtqmK6B5X03hFtqYG9/pubhtml',
-        callback: showProjects,
-        simpleSheet: true
-      });
+function loadCSV() {
+  Papa.parse('https://docs.google.com/spreadsheets/d/e/2PACX-1vTSUGRxg-5qwj4dGT3Dg5VJeRGiUONiwX5yP5eJZyQLCC5kUt895zpJDHq7Z_QtqmK6B5X03hFtqYG9/pub?output=csv', {
+    download: true,
+    header: true,
+    dynamicTyping: true,
+    complete: function(results) {
+      projects = results.data;
+      extractUniqueValues();
+      updateDashboard();
+      populateTabs();
+      filterProjects();
     }
+  });
+}
 
-    // Display the projects in the UI
-    function showProjects(data) {
-      projectsData = data; // Store the data for filtering later
-      displayProjects(data);
-    }
+function extractUniqueValues() {
+  projects.forEach(project => {
+    extractValues(project['Category(s)'], categories);
+    extractValues(project['Technologies'], technologies);
+    extractValues(project['Techniques Used'], techniques);
+    extractValues(project['Libraries Used'], libraries);
+  });
+}
 
-    // Filter the projects based on selected categories
-    function filterProjects() {
-      const selectedCategories = Array.from(document.querySelectorAll('.category-checkbox:checked'))
-                                      .map(input => input.value);
-      const filteredProjects = projectsData.filter(project => {
-        const categories = project['Category(s)'].split(',').map(category => category.trim());
-        return selectedCategories.some(category => categories.includes(category));
-      });
-      displayProjects(filteredProjects);
-    }
+function extractValues(field, targetSet) {
+  field.split(',').map(item => item.trim().toLowerCase()).forEach(item => targetSet.add(item));
+}
 
-    // Display the projects dynamically
-    function displayProjects(projects) {
-      const container = document.getElementById('projects-container');
-      container.innerHTML = ''; // Clear existing projects
+function updateDashboard() {
+  document.getElementById("total-projects").textContent = projects.length;
+  document.getElementById("total-categories").textContent = categories.size;
+  document.getElementById("total-technologies").textContent = technologies.size;
+  document.getElementById("total-techniques").textContent = techniques.size;
+  document.getElementById("total-libraries").textContent = libraries.size;
+}
 
-      projects.forEach(project => {
-        const projectCard = document.createElement('div');
-        projectCard.classList.add('project-card');
-        projectCard.innerHTML = `
-          <h3>${project['Project Name']}</h3>
-          <p>${project['Description']}</p>
-          <a href="${project['Link']}" target="_blank">View Project</a>
-        `;
-        container.appendChild(projectCard);
-      });
-    }
+function populateTabs() {
+  const tabContainer = document.getElementById('category-tabs');
+  Array.from(categories).forEach(category => {
+    const tabButton = document.createElement('button');
+    tabButton.textContent = category.charAt(0).toUpperCase() + category.slice(1);
+    tabButton.addEventListener('click', () => onCategoryTabClick(category));
+    tabContainer.appendChild(tabButton);
+  });
+}
 
-    // Event listener for category filters
-    document.querySelectorAll('.category-checkbox').forEach(checkbox => {
-      checkbox.addEventListener('change', filterProjects);
-    });
+function onCategoryTabClick(category) {
+  // Add or remove the 'active' class to show which tab is selected
+  const tabs = document.querySelectorAll('.tabs button');
+  tabs.forEach(tab => tab.classList.remove('active'));
+  event.target.classList.add('active');
+  
+  filterProjects(category); // Apply filter to the selected category
+}
 
-    window.addEventListener('DOMContentLoaded', init); // Initialize once DOM is ready
-  </script>
+function filterProjects(category = 'all') {
+  const filteredProjects = projects.filter(project => {
+    return category === 'all' || project['Category(s)'].toLowerCase().includes(category.toLowerCase());
+  });
+
+  displayProjects(filteredProjects);
+}
+
+function displayProjects(filteredProjects) {
+  const container = document.getElementById("project-cards-container");
+  container.innerHTML = ''; // Clear existing projects
+  
+  filteredProjects.forEach(project => {
+    const card = document.createElement('div');
+    card.classList.add('project-card');
+    
+    const projectName = project['Project Name'];
+    const description = project['Description'];
+    const projectLink = project['Link']; // From the Link column
+
+    card.innerHTML = `
+      <h3>${projectName}</h3>
+      <p>${description}</p>
+      <a href="${projectLink}" target="_blank">View Project</a>
+    `;
+    
+    container.appendChild(card);
+  });
+}
+
+loadCSV();
+</script>
 
 </body>
 </html>
