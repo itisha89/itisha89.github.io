@@ -5,287 +5,222 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Itisha Sharma Portfolio</title>
   <style>
-    body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    /* Basic reset */
+    * {
       margin: 0;
       padding: 0;
-      background-color: #EDF6F9; /* Light Blue */
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f4f6f9;
       color: #333;
       display: flex;
-      height: 100vh;
-      overflow: hidden;
+      flex-direction: column;
+      align-items: center;
+      padding-top: 40px;
+      overflow-x: hidden;
     }
+
+    /* Header styling */
     header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      background-color: #006D77; /* Dark Teal for header */
-      color: #fff;
-      padding: 20px 30px;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
       width: 100%;
+      max-width: 1200px;
+      padding: 20px 30px;
+      background-color: #006D77;
+      color: #fff;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     }
+
     header h1 {
-      margin: 0;
-      font-size: 28px;
+      font-size: 30px;
     }
+
     .social-links {
       display: flex;
       gap: 20px;
     }
+
     .social-links img {
       width: 40px;
+      cursor: pointer;
       transition: transform 0.3s ease;
     }
+
     .social-links img:hover {
       transform: scale(1.1);
     }
-    .dashboard {
+
+    /* Tab navigation */
+    .tabs {
       display: flex;
-      justify-content: center;
-      gap: 30px;
-      margin: 40px 0;
-      padding: 30px;
-      background: #fff;
-      border-radius: 10px;
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+      gap: 10px;
+      margin-top: 20px;
+      margin-bottom: 40px;
     }
-    .dashboard div {
-      text-align: center;
+
+    .tab {
+      background-color: #006D77;
+      color: white;
+      padding: 12px 20px;
       font-size: 18px;
-      font-weight: bold;
-    }
-    .filter-container {
-      text-align: left;
-      margin: 20px;
-      font-size: 16px;
-      width: 250px;
-      position: fixed;
-      top: 120px;
-      left: 30px;
-      z-index: 10;
-    }
-    select {
-      padding: 12px;
-      font-size: 16px;
-      border: 1px solid #ccc;
+      border: none;
+      cursor: pointer;
       border-radius: 5px;
-      background-color: #fff;
-      width: 100%;
+      transition: background-color 0.3s;
     }
-    .project-cards-container {
+
+    .tab:hover {
+      background-color: #004d4d;
+    }
+
+    .tab.active {
+      background-color: #83C5BE;
+    }
+
+    /* Project card container */
+    .projects-container {
       display: flex;
       flex-wrap: wrap;
       justify-content: center;
       gap: 30px;
-      margin-top: 40px;
-      padding-left: 300px; /* Adjusted to make room for the filter */
-      flex: 1;
-      overflow-y: auto;
+      width: 100%;
+      max-width: 1200px;
+      margin-top: 20px;
     }
+
     .project-card {
-      background-color: #F2E9E4; 
-      border: 1px solid #22223B; 
+      background-color: #F2E9E4;
+      border: 1px solid #22223B;
       border-radius: 8px;
       padding: 20px;
       width: 250px;
       text-align: center;
       box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
       transition: all 0.3s ease;
-      cursor: pointer;
     }
+
     .project-card:hover {
       transform: translateY(-10px);
-      background-color: #C9ADA7;
-      border-color: #4A4E69; 
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
     }
-    .project-card a {
-      text-decoration: none;
-      color: #22223B; 
-      font-weight: bold;
+
+    .project-card img {
+      width: 100%;
+      height: 150px;
+      object-fit: cover;
+      border-radius: 5px;
     }
+
+    .project-card h3 {
+      margin-top: 10px;
+      font-size: 18px;
+      color: #22223B;
+    }
+
+    .project-card p {
+      color: #555;
+      margin-top: 8px;
+    }
+
+    /* Footer styling */
     footer {
       text-align: center;
-      margin: 40px;
       padding: 20px;
-      background-color: #006D77; /* Dark Teal footer */
-      color: #fff;
-    }
-    footer .social-links img {
-      width: 35px;
-    }
-    .btn-primary {
-      background-color: #83C5BE; /* Light Teal for Call-to-Action Buttons */
-      color: #fff;
-      border: none;
-      padding: 12px 25px;
-      font-size: 16px;
-      border-radius: 5px;
-      cursor: pointer;
-      transition: background-color 0.3s ease;
-    }
-    .btn-primary:hover {
-      background-color: #E29578; /* Peach on hover */
-    }
-    .project-details {
-      margin-top: 30px;
-      padding: 20px;
-      background-color: #fff;
-      border-radius: 8px;
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+      background-color: #22223B;
+      color: white;
       width: 100%;
-      display: none;
-    }
-    .project-details h3 {
-      font-size: 24px;
-    }
-    .project-details p {
-      font-size: 16px;
-    }
-    .project-details a {
-      font-size: 16px;
-      font-weight: bold;
-      color: #006D77;
+      bottom: 0;
+      position: relative;
     }
   </style>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
 </head>
 <body>
 
   <header>
     <h1>Itisha Sharma Portfolio</h1>
     <div class="social-links">
-      <a href="https://www.linkedin.com/in/itishasharmaofficial/" target="_blank">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/81/LinkedIn_icon.svg/2048px-LinkedIn_icon.svg.png" alt="LinkedIn">
-      </a>
-      <a href="https://github.com/itisha89" target="_blank">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/9/91/Octicons-mark-github.svg" alt="GitHub">
-      </a>
-      <a href="https://www.canva.com/design/DAGfc7cIYuQ/pNwyvhHJW_817BSEo7G6rA/view?utm_content=DAGfc7cIYuQ&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utlId=h48b44fbe12" target="_blank">
-        <button class="btn-primary">View Resume</button>
-      </a>
+      <a href="https://github.com/ItishaSharma" target="_blank"><img src="https://img.icons8.com/material-outlined/24/ffffff/github.png" alt="GitHub"></a>
+      <a href="https://www.linkedin.com/in/itishasharma/" target="_blank"><img src="https://img.icons8.com/material-outlined/24/ffffff/linkedin.png" alt="LinkedIn"></a>
     </div>
   </header>
 
-  <div class="dashboard" id="dashboard">
-    <div>Total Projects: <span id="total-projects">0</span></div>
-    <div>Categories: <span id="total-categories">0</span></div>
-    <div>Technologies: <span id="total-technologies">0</span></div>
-    <div>Techniques: <span id="total-techniques">0</span></div>
-    <div>Libraries: <span id="total-libraries">0</span></div>
+  <!-- Tab Navigation -->
+  <div class="tabs">
+    <button class="tab active" onclick="showCategory('category1')">Category 1</button>
+    <button class="tab" onclick="showCategory('category2')">Category 2</button>
+    <button class="tab" onclick="showCategory('category3')">Category 3</button>
   </div>
 
-  <div class="filter-container">
-    <label for="category-filter">Filter by Category: </label>
-    <select id="category-filter" onchange="filterProjects()">
-      <option value="all">All Categories</option>
-    </select>
-  </div>
-
-  <div class="project-cards-container" id="project-cards-container"></div>
-
-  <div class="project-details" id="project-details">
-    <h3>Project Details</h3>
-    <p><strong>Technology:</strong> <span id="tech-details"></span></p>
-    <p><strong>Library:</strong> <span id="lib-details"></span></p>
-    <p><strong>Project Link:</strong> <a id="project-link" href="" target="_blank">View Project</a></p>
-  </div>
-
-  <footer>
-    <div class="social-links">
-      <a href="https://www.linkedin.com/in/itishasharmaofficial/" target="_blank">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/81/LinkedIn_icon.svg/2048px-LinkedIn_icon.svg.png" alt="LinkedIn">
-      </a>
-      <a href="https://github.com/itisha89" target="_blank">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/9/91/Octicons-mark-github.svg" alt="GitHub">
-      </a>
-      <a href="https://www.canva.com/design/DAGfc7cIYuQ/pNwyvhHJW_817BSEo7G6rA/view?utm_content=DAGfc7cIYuQ&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utlId=h48b44fbe12" target="_blank">
-        <button class="btn-primary">View Resume</button>
-      </a>
+  <!-- Projects Container -->
+  <div class="projects-container" id="category1">
+    <div class="project-card">
+      <img src="project1.jpg" alt="Project 1">
+      <h3>Project 1</h3>
+      <p>Short description of the project.</p>
     </div>
+    <div class="project-card">
+      <img src="project2.jpg" alt="Project 2">
+      <h3>Project 2</h3>
+      <p>Short description of the project.</p>
+    </div>
+  </div>
+
+  <div class="projects-container" id="category2" style="display:none;">
+    <div class="project-card">
+      <img src="project3.jpg" alt="Project 3">
+      <h3>Project 3</h3>
+      <p>Short description of the project.</p>
+    </div>
+    <div class="project-card">
+      <img src="project4.jpg" alt="Project 4">
+      <h3>Project 4</h3>
+      <p>Short description of the project.</p>
+    </div>
+  </div>
+
+  <div class="projects-container" id="category3" style="display:none;">
+    <div class="project-card">
+      <img src="project5.jpg" alt="Project 5">
+      <h3>Project 5</h3>
+      <p>Short description of the project.</p>
+    </div>
+    <div class="project-card">
+      <img src="project6.jpg" alt="Project 6">
+      <h3>Project 6</h3>
+      <p>Short description of the project.</p>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    <p>© 2025 Itisha Sharma. All rights reserved.</p>
   </footer>
 
   <script>
-    let projects = [];
-    let categories = new Set(), technologies = new Set(), techniques = new Set(), libraries = new Set();
-
-    function loadCSV() {
-      Papa.parse('https://docs.google.com/spreadsheets/d/e/2PACX-1vTSUGRxg-5qwj4dGT3Dg5VJeRGiUONiwX5yP5eJZyQLCC5kUt895zpJDHq7Z_QtqmK6B5X03hFtqYG9/pub?output=csv', {
-        download: true,
-        header: true,
-        dynamicTyping: true,
-        complete: function(results) {
-          projects = results.data;
-          extractUniqueValues();
-          updateDashboard();
-          populateFilters();
-          filterProjects();
-        }
+    function showCategory(category) {
+      // Hide all categories
+      document.querySelectorAll('.projects-container').forEach(container => {
+        container.style.display = 'none';
       });
-    }
 
-    function extractUniqueValues() {
-      projects.forEach(project => {
-        extractValues(project['Category(s)'], categories);
-        extractValues(project['Technologies'], technologies);
-        extractValues(project['Techniques Used'], techniques);
-        extractValues(project['Libraries Used'], libraries);
+      // Remove active class from all tabs
+      document.querySelectorAll('.tab').forEach(tab => {
+        tab.classList.remove('active');
       });
+
+      // Show the selected category and highlight the active tab
+      document.getElementById(category).style.display = 'flex';
+      document.querySelector(`button[onclick="showCategory('${category}')"]`).classList.add('active');
     }
 
-    function extractValues(field, set) {
-      if (field) {
-        field.split(',').forEach(value => set.add(value.trim()));
-      }
-    }
-
-    function updateDashboard() {
-      document.getElementById("total-projects").textContent = projects.length;
-      document.getElementById("total-categories").textContent = categories.size;
-      document.getElementById("total-technologies").textContent = technologies.size;
-      document.getElementById("total-techniques").textContent = techniques.size;
-      document.getElementById("total-libraries").textContent = libraries.size;
-    }
-
-    function populateFilters() {
-      const filterSelect = document.getElementById("category-filter");
-      categories.forEach(category => {
-        const option = document.createElement("option");
-        option.value = category.toLowerCase();
-        option.textContent = category;
-        filterSelect.appendChild(option);
-      });
-    }
-
-    function filterProjects() {
-      const categoryFilter = document.getElementById("category-filter").value;
-      const filteredProjects = categoryFilter === "all" 
-        ? projects 
-        : projects.filter(project => project['Category(s)'].toLowerCase().split(',').map(item => item.trim()).includes(categoryFilter));
-      
-      displayProjects(filteredProjects);
-    }
-
-    function displayProjects(filteredProjects) {
-      const projectContainer = document.getElementById("project-cards-container");
-      projectContainer.innerHTML = '';
-      filteredProjects.forEach(project => {
-        const card = document.createElement('div');
-        card.classList.add('project-card');
-        card.innerHTML = `<h4>${project['Project Name']}</h4>`;
-        card.onclick = () => showProjectDetails(project);
-        projectContainer.appendChild(card);
-      });
-    }
-
-    function showProjectDetails(project) {
-      document.getElementById("tech-details").textContent = project['Technologies'];
-      document.getElementById("lib-details").textContent = project['Libraries Used'];
-      document.getElementById("project-link").href = project['Link']; // Link column used here
-      document.getElementById("project-details").style.display = 'block';
-    }
-
-    loadCSV();
+    // Initially show the first category
+    showCategory('category1');
   </script>
+
 </body>
 </html>
