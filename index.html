@@ -5,22 +5,144 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Itisha Sharma Portfolio</title>
   <style>
-    /* Add your styles here */
-    .filter-container {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
+    /* General Styles */
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      background-color: #f4f4f9;
     }
+    
+    header {
+      background-color: #333;
+      color: white;
+      padding: 20px;
+      text-align: center;
+    }
+
+    header h1 {
+      margin: 0;
+    }
+
+    .social-links {
+      margin-top: 10px;
+    }
+
+    .social-links a {
+      margin: 0 10px;
+      text-decoration: none;
+    }
+
+    .social-links img {
+      width: 24px;
+      height: 24px;
+      transition: transform 0.3s ease;
+    }
+
+    .social-links img:hover {
+      transform: scale(1.2);
+    }
+
+    .filter-container {
+      margin: 20px;
+      padding: 10px;
+      background-color: #fff;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
     .filter-container label {
+      font-weight: bold;
       margin-right: 10px;
     }
+
     .filter-container input[type="checkbox"] {
       margin-right: 5px;
     }
+
+    .filter-container div {
+      margin-bottom: 10px;
+    }
+
+    .project-cards-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      justify-content: center;
+      margin: 20px;
+    }
+
     .project-card {
       border: 1px solid #ccc;
+      padding: 20px;
+      width: 300px;
+      background-color: #fff;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      text-align: center;
+      transition: transform 0.3s ease;
+    }
+
+    .project-card:hover {
+      transform: scale(1.05);
+    }
+
+    .project-card h3 {
+      margin-top: 0;
+    }
+
+    footer {
+      text-align: center;
       padding: 10px;
-      margin: 10px 0;
+      background-color: #333;
+      color: white;
+    }
+
+    footer a {
+      color: white;
+      text-decoration: none;
+    }
+
+    footer button {
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    footer button:hover {
+      background-color: #45a049;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      .project-cards-container {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .project-card {
+        width: 90%;
+      }
+    }
+
+    @media (max-width: 480px) {
+      header h1 {
+        font-size: 1.5em;
+      }
+
+      .social-links img {
+        width: 20px;
+        height: 20px;
+      }
+
+      footer button {
+        padding: 8px 16px;
+      }
     }
   </style>
 </head>
@@ -46,18 +168,6 @@
     <label for="category-filter">Filter by Category:</label>
     <div id="category-filter"></div>
   </div>
-  <div>
-    <label for="tech-filter">Filter by Technology:</label>
-    <div id="tech-filter"></div>
-  </div>
-  <div>
-    <label for="technique-filter">Filter by Technique:</label>
-    <div id="technique-filter"></div>
-  </div>
-  <div>
-    <label for="library-filter">Filter by Library:</label>
-    <div id="library-filter"></div>
-  </div>
 </div>
 
 <div class="project-cards-container" id="project-cards-container"></div>
@@ -79,7 +189,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
 <script>
 let projects = [];
-let categories = new Set(), technologies = new Set(), techniques = new Set(), libraries = new Set();
+let categories = new Set();
 
 function loadCSV() {
   Papa.parse('https://docs.google.com/spreadsheets/d/e/2PACX-1vTSUGRxg-5qwj4dGT3Dg5VJeRGiUONiwX5yP5eJZyQLCC5kUt895zpJDHq7Z_QtqmK6B5X03hFtqYG9/pub?output=csv', {
@@ -98,9 +208,6 @@ function loadCSV() {
 function extractUniqueValues() {
   projects.forEach(project => {
     extractValues(project['Category(s)'], categories);
-    extractValues(project['Technologies'], technologies);
-    extractValues(project['Techniques Used'], techniques);
-    extractValues(project['Libraries Used'], libraries);
   });
 }
 
@@ -110,9 +217,6 @@ function extractValues(field, targetSet) {
 
 function populateFilters() {
   populateFilterOptions("category-filter", Array.from(categories).sort());
-  populateFilterOptions("tech-filter", Array.from(technologies).sort());
-  populateFilterOptions("technique-filter", Array.from(techniques).sort());
-  populateFilterOptions("library-filter", Array.from(libraries).sort());
 }
 
 function populateFilterOptions(id, items) {
@@ -134,16 +238,10 @@ function populateFilterOptions(id, items) {
 
 function filterProjects() {
   const categoryFilter = Array.from(document.querySelectorAll("#category-filter input:checked")).map(checkbox => checkbox.value);
-  const techFilter = Array.from(document.querySelectorAll("#tech-filter input:checked")).map(checkbox => checkbox.value);
-  const techniqueFilter = Array.from(document.querySelectorAll("#technique-filter input:checked")).map(checkbox => checkbox.value);
-  const libraryFilter = Array.from(document.querySelectorAll("#library-filter input:checked")).map(checkbox => checkbox.value);
 
   const filteredProjects = projects.filter(project => {
     return (
-      (categoryFilter.length === 0 || categoryFilter.some(filter => project['Category(s)'].toLowerCase().includes(filter))) &&
-      (techFilter.length === 0 || techFilter.some(filter => project['Technologies'].toLowerCase().includes(filter))) &&
-      (techniqueFilter.length === 0 || techniqueFilter.some(filter => project['Techniques Used'].toLowerCase().includes(filter))) &&
-      (libraryFilter.length === 0 || libraryFilter.some(filter => project['Libraries Used'].toLowerCase().includes(filter)))
+      categoryFilter.length === 0 || categoryFilter.some(filter => project['Category(s)'].toLowerCase().includes(filter))
     );
   });
 
