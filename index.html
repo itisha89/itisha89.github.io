@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Itisha Sharma Portfolio</title>
   <style>
-    /* Basic reset */
     * {
       margin: 0;
       padding: 0;
@@ -20,10 +19,8 @@
       flex-direction: column;
       align-items: center;
       padding-top: 40px;
-      overflow-x: hidden;
     }
 
-    /* Header styling */
     header {
       display: flex;
       justify-content: space-between;
@@ -40,49 +37,28 @@
       font-size: 30px;
     }
 
-    .social-links {
+    /* Category filter */
+    .filter-container {
+      max-width: 1200px;
+      margin-top: 30px;
+    }
+
+    .category-filter {
       display: flex;
+      flex-wrap: wrap;
       gap: 20px;
     }
 
-    .social-links img {
-      width: 40px;
-      cursor: pointer;
-      transition: transform 0.3s ease;
-    }
-
-    .social-links img:hover {
-      transform: scale(1.1);
-    }
-
-    /* Tab navigation */
-    .tabs {
-      display: flex;
-      gap: 10px;
-      margin-top: 20px;
-      margin-bottom: 40px;
-    }
-
-    .tab {
-      background-color: #006D77;
-      color: white;
-      padding: 12px 20px;
+    .category-filter label {
       font-size: 18px;
-      border: none;
-      cursor: pointer;
-      border-radius: 5px;
-      transition: background-color 0.3s;
+      margin-right: 10px;
     }
 
-    .tab:hover {
-      background-color: #004d4d;
+    .category-filter input {
+      margin-right: 10px;
     }
 
-    .tab.active {
-      background-color: #83C5BE;
-    }
-
-    /* Project card container */
+    /* Project list */
     .projects-container {
       display: flex;
       flex-wrap: wrap;
@@ -90,7 +66,7 @@
       gap: 30px;
       width: 100%;
       max-width: 1200px;
-      margin-top: 20px;
+      margin-top: 40px;
     }
 
     .project-card {
@@ -98,7 +74,7 @@
       border: 1px solid #22223B;
       border-radius: 8px;
       padding: 20px;
-      width: 250px;
+      width: 300px;
       text-align: center;
       box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
       transition: all 0.3s ease;
@@ -127,6 +103,14 @@
       margin-top: 8px;
     }
 
+    .project-card a {
+      margin-top: 10px;
+      display: inline-block;
+      color: #006D77;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
     /* Footer styling */
     footer {
       text-align: center;
@@ -143,83 +127,81 @@
 
   <header>
     <h1>Itisha Sharma Portfolio</h1>
-    <div class="social-links">
-      <a href="https://github.com/ItishaSharma" target="_blank"><img src="https://img.icons8.com/material-outlined/24/ffffff/github.png" alt="GitHub"></a>
-      <a href="https://www.linkedin.com/in/itishasharma/" target="_blank"><img src="https://img.icons8.com/material-outlined/24/ffffff/linkedin.png" alt="LinkedIn"></a>
-    </div>
   </header>
 
-  <!-- Tab Navigation -->
-  <div class="tabs">
-    <button class="tab active" onclick="showCategory('category1')">Category 1</button>
-    <button class="tab" onclick="showCategory('category2')">Category 2</button>
-    <button class="tab" onclick="showCategory('category3')">Category 3</button>
-  </div>
-
-  <!-- Projects Container -->
-  <div class="projects-container" id="category1">
-    <div class="project-card">
-      <img src="project1.jpg" alt="Project 1">
-      <h3>Project 1</h3>
-      <p>Short description of the project.</p>
-    </div>
-    <div class="project-card">
-      <img src="project2.jpg" alt="Project 2">
-      <h3>Project 2</h3>
-      <p>Short description of the project.</p>
+  <!-- Category Filter (Checkbox) -->
+  <div class="filter-container">
+    <div class="category-filter">
+      <label><input type="checkbox" class="category-checkbox" value="Data Visualization"> Data Visualization</label>
+      <label><input type="checkbox" class="category-checkbox" value="Healthcare Analytics"> Healthcare Analytics</label>
+      <label><input type="checkbox" class="category-checkbox" value="Machine Learning"> Machine Learning</label>
+      <!-- Add more categories as necessary -->
     </div>
   </div>
 
-  <div class="projects-container" id="category2" style="display:none;">
-    <div class="project-card">
-      <img src="project3.jpg" alt="Project 3">
-      <h3>Project 3</h3>
-      <p>Short description of the project.</p>
-    </div>
-    <div class="project-card">
-      <img src="project4.jpg" alt="Project 4">
-      <h3>Project 4</h3>
-      <p>Short description of the project.</p>
-    </div>
+  <!-- Project List -->
+  <div class="projects-container" id="projects-container">
+    <!-- Projects will be dynamically loaded here -->
   </div>
 
-  <div class="projects-container" id="category3" style="display:none;">
-    <div class="project-card">
-      <img src="project5.jpg" alt="Project 5">
-      <h3>Project 5</h3>
-      <p>Short description of the project.</p>
-    </div>
-    <div class="project-card">
-      <img src="project6.jpg" alt="Project 6">
-      <h3>Project 6</h3>
-      <p>Short description of the project.</p>
-    </div>
-  </div>
-
-  <!-- Footer -->
   <footer>
     <p>© 2025 Itisha Sharma. All rights reserved.</p>
   </footer>
 
+  <!-- Tabletop.js Script -->
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/tabletop@1.6.1/tabletop.min.js"></script>
   <script>
-    function showCategory(category) {
-      // Hide all categories
-      document.querySelectorAll('.projects-container').forEach(container => {
-        container.style.display = 'none';
-      });
+    let projectsData = [];
 
-      // Remove active class from all tabs
-      document.querySelectorAll('.tab').forEach(tab => {
-        tab.classList.remove('active');
+    // Initialize Tabletop.js to fetch the Google Sheet data
+    function init() {
+      Tabletop.init({
+        key: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTSUGRxg-5qwj4dGT3Dg5VJeRGiUONiwX5yP5eJZyQLCC5kUt895zpJDHq7Z_QtqmK6B5X03hFtqYG9/pubhtml',
+        callback: showProjects,
+        simpleSheet: true
       });
-
-      // Show the selected category and highlight the active tab
-      document.getElementById(category).style.display = 'flex';
-      document.querySelector(`button[onclick="showCategory('${category}')"]`).classList.add('active');
     }
 
-    // Initially show the first category
-    showCategory('category1');
+    // Display the projects in the UI
+    function showProjects(data) {
+      projectsData = data; // Store the data for filtering later
+      displayProjects(data);
+    }
+
+    // Filter the projects based on selected categories
+    function filterProjects() {
+      const selectedCategories = Array.from(document.querySelectorAll('.category-checkbox:checked'))
+                                      .map(input => input.value);
+      const filteredProjects = projectsData.filter(project => {
+        const categories = project['Category(s)'].split(',').map(category => category.trim());
+        return selectedCategories.some(category => categories.includes(category));
+      });
+      displayProjects(filteredProjects);
+    }
+
+    // Display the projects dynamically
+    function displayProjects(projects) {
+      const container = document.getElementById('projects-container');
+      container.innerHTML = ''; // Clear existing projects
+
+      projects.forEach(project => {
+        const projectCard = document.createElement('div');
+        projectCard.classList.add('project-card');
+        projectCard.innerHTML = `
+          <h3>${project['Project Name']}</h3>
+          <p>${project['Description']}</p>
+          <a href="${project['Link']}" target="_blank">View Project</a>
+        `;
+        container.appendChild(projectCard);
+      });
+    }
+
+    // Event listener for category filters
+    document.querySelectorAll('.category-checkbox').forEach(checkbox => {
+      checkbox.addEventListener('change', filterProjects);
+    });
+
+    window.addEventListener('DOMContentLoaded', init); // Initialize once DOM is ready
   </script>
 
 </body>
